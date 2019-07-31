@@ -4,11 +4,19 @@
   "description": "line-client",
   "main": "app.js",
   "scripts": {
-    "dev": "cross-env NODE_ENV=dev nodemon --exec babel-node app.js",
-    "eslint:fix": "eslint --fix ./app.js"
+    "dev": "npm run lint:fix && npm run start",
+    "start": "cross-env NODE_ENV=dev nodemon --exec babel-node app.js",
+    "lint:fix": "eslint --fix ./app.js"
   },
   "dependencies": {
-    "express": "^4.17.1"
+    "bluebird": "^3.5.5",
+    "bootstrap": "^4.3.1",
+    "express": "^4.17.1",
+    "express-session": "^1.16.2",
+    "jquery": "^3.4.1",
+    "log4js": "^4.5.1",
+    "moment": "^2.24.0",
+    "nunjucks": "^3.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.5.5",
@@ -17,7 +25,8 @@
     "@babel/plugin-proposal-decorators": "^7.4.4",
     "@babel/preset-env": "^7.5.5",
     "cross-env": "^5.2.0",
-    "eslint": "^6.1.0"
+    "eslint": "^6.1.0",
+    "morgan": "^1.9.1"
   },
   "repository": {
     "type": "git",
