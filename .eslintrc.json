@@ -1,0 +1,23 @@
+{
+  "root": true,
+  "env": {
+    "node": true,
+    "es6": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 2018,
+    "sourceType": "module"
+  },
+  "extends": [
+    "eslint:recommended"
+  ],
+  "rules": {
+    "indent": ["warn", 2],
+    "semi": ["warn", "always"],
+    "quotes": ["warn", "single"],
+    "linebreak-style": ["error", "unix"],
+    "object-curly-spacing": ["error", "always"],
+    "no-duplicate-imports": ["error", { "includeExports": true }],
+    "no-useless-rename": ["error", { "ignoreImport": true }]
+  }
+}

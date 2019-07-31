@@ -1,0 +1,9 @@
+{
+  "verbose": true,
+  "ignore": ["./docs/*"],
+  "execMap": {
+    "rb": "ruby",
+    "pde": "processing --sketch={{pwd}} --run",
+    "e": "*.js, *.njk"
+  }
+}
