@@ -53,7 +53,7 @@ nunjucks.configure('views', {
   express: app
 });
 
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'dist')));
 
 router(app);
 

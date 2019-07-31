@@ -66,5 +66,5 @@ typings/
 
 # local
 logs/
-public/uploads/
+dist
 
