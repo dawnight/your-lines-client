@@ -1,6 +1,10 @@
 const gulp = require('gulp');
-const imagemin = require('gulp-imagemin');
+const rename = require('gulp-rename');
+const cache = require('gulp-cache');
+const imageMin = require('gulp-imagemin');
 const sass = require('gulp-sass');
+const minifyCSS = require('gulp-minify-css');
+const autoPrefixer = require('gulp-autoprefixer');
 const uglify = require('gulp-uglify');
 const del = require('del');
 
@@ -31,23 +35,33 @@ const PATH = {
 };
 
 function image () {
-  return gulp.src(PATH.image.src).pipe(imagemin()).pipe(gulp.dest(PATH.image.dist));
-}
-
-function style () {
-  return gulp.src(PATH.style.src).pipe(sass.sync()).pipe(gulp.dest(PATH.style.dist));
-}
-
-function javascript () {
-  return gulp.src(PATH.javascript.src).pipe(uglify()).pipe(gulp.dest(PATH.javascript.dist));
-}
-
-function vendor () {
-  return gulp.src(PATH.vendor.src).pipe(gulp.dest(PATH.vendor.dist));
+  return gulp.src(PATH.image.src)
+    .pipe(cache(imageMin({ optimizationLevel: 3, progressive: true, interlaced: true })))
+    .pipe(gulp.dest(PATH.image.dist));
 }
 
 function font () {
   return gulp.src(PATH.font.src).pipe(gulp.dest(PATH.font.dist));
+}
+
+function style () {
+  return gulp.src(PATH.style.src)
+    .pipe(sass.sync())
+    .pipe(autoPrefixer('last 2 version', 'safari 5', 'ie 8', 'ie 9', 'opera 12.1', 'ios 6', 'android 4'))
+    .pipe(minifyCSS())
+    .pipe(rename({ suffix: '.min' }))
+    .pipe(gulp.dest(PATH.style.dist));
+}
+
+function javascript () {
+  return gulp.src(PATH.javascript.src)
+    .pipe(uglify())
+    .pipe(rename({ suffix: '.min' }))
+    .pipe(gulp.dest(PATH.javascript.dist));
+}
+
+function vendor () {
+  return gulp.src(PATH.vendor.src).pipe(gulp.dest(PATH.vendor.dist));
 }
 
 function watch(done) {
@@ -63,6 +77,6 @@ function clean() {
   return del(['dist']);
 }
 
-const build = gulp.series(clean, gulp.parallel(image, style, javascript, vendor, font));
+const build = gulp.series(clean, gulp.parallel(image, font, style, javascript, vendor));
 
 exports.default = gulp.series(build, watch);
