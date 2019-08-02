@@ -11,7 +11,7 @@ export const NAV_LIST = [
   { id: 'about', href: '/about', name: '关于' }
 ];
 
-export const SEARCH_TYPE = {
+export const SEARCH_TYPE_LIST = {
   TYPE: [
     { id: 'movie', nameEn: 'movie', nameCn: '电影' },
     { id: 'tv', nameEn: 'tv', nameCn: '电视剧' },
