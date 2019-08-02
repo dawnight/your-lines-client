@@ -1,6 +1,6 @@
 export const LOGO_INFO = {
   alt: 'your lines logo',
-  url: ''
+  url: 'http://image.ikite.top/google-logo.jpg'
 };
 
 export const NAV_LIST = [

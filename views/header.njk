@@ -1,20 +1,22 @@
-<header>
-  <div class="logo-wrapper">
-    <img src="{{ logoInfo.url }}" alt="{{ logoInfo.alt }}" class="logo">
-  </div>
-  <ul class="nav">
-    {% for item in navList %}
+<header class="header">
+  <div class="wrapper">
+    <div class="logo-wrapper">
+      <img src="{{ logoInfo.url }}" alt="{{ logoInfo.alt }}" class="logo">
+    </div>
+    <ul class="nav">
+      {% for item in navList %}
+        <li class="nav-item">
+          <a href="{{ item.href }}" class="nav-link {% if page === item.id %} active {% endif %}">{{ item.name }}</a>
+        </li>
+      {% endfor %}
       <li class="nav-item">
-        <a href="{{ item.href }}" class="nav-link">{{ item.name }}</a>
+        <div class="search">
+
+        </div>
       </li>
-    {% endfor %}
-    <li class="nav-item">
-      <div class="search">
+    </ul>
+    <div class="profile">
 
-      </div>
-    </li>
-  </ul>
-  <div class="profile">
-
+    </div>
   </div>
 </header>

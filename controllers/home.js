@@ -4,6 +4,7 @@ export const renderHome = (req, res) => {
   res.render('pages/index', {
     navList,
     searchTypeList,
-    logoInfo
+    logoInfo,
+    page: 'home'
   });
 };

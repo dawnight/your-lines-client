@@ -1,0 +1,36 @@
+@import "./root";
+
+.header {
+  .wrapper {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    height: 80px;
+    padding: 0 20px;
+    background: #fff;
+    box-shadow: 0 3px 3px $shadow-color;
+    .logo-wrapper {
+      .logo {
+        width: 140px;
+        height: 50px;
+      }
+    }
+    .nav {
+      margin-left: 60px;
+      display: flex;
+      justify-content: flex-start;
+      li {
+        padding: 4px;
+        margin-left: 40px;
+        font-size: 22px;
+        a {
+          color: $assist-color;
+          text-decoration: none;
+          &.active {
+            color: $content-color;
+          }
+        }
+      }
+    }
+  }
+}

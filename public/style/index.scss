@@ -1,7 +1,13 @@
 @import "./reset";
+@import "./root";
+body {
+  width: 100%;
+  background: $bg-color;
+}
 
 .container {
   width: 1400px;
   margin: 0 auto;
-  background: red;
 }
+
+
