@@ -11,22 +11,24 @@ export const NAV_LIST = [
   { id: 'about', href: '/about', name: '关于' }
 ];
 
-export const SEARCH_TYPE_LIST = {
-  TYPE: [
-    { id: 'movie', nameEn: 'movie', nameCn: '电影' },
-    { id: 'tv', nameEn: 'tv', nameCn: '电视剧' },
-    { id: 'carton', nameEn: 'carton', nameCn: '动漫' }
-  ],
-  AREA: [
-    { id: 'mainland', nameEn: 'mainland', nameCn: '中国大陆' },
-    { id: 'gat', nameEn: 'gat', nameCn: '港澳台' },
-    { id: 'usa', nameEn: 'usa', nameCn: '美国' },
-    { id: 'japan', nameEn: 'japan', nameCn: '日本' },
-    { id: 'korea', nameEn: 'korea', nameCn: '韩国' },
-    { id: 'other', nameEn: 'other', nameCn: '其他' }
-  ],
-  HELPER: [
-    { id: 'new', nameEn: 'new', nameCn: '最新' },
-    { id: 'like', nameEn: 'like', nameCn: '点赞最多' }
-  ]
-};
+export const SEARCH_TYPE_LIST = [
+  { id: 'all', name: '全部形式' },
+  { id: 'movie', name: '电影' },
+  { id: 'tv', name: '电视剧' },
+  { id: 'carton', name: '动漫' }
+];
+
+export const SEARCH_AREA_LIST = [
+  { id: 'all', name: '全部地区' },
+  { id: 'mainland', name: '中国大陆' },
+  { id: 'gat', name: '港澳台' },
+  { id: 'usa', name: '美国' },
+  { id: 'japan', name: '日本' },
+  { id: 'korea', name: '韩国' },
+  { id: 'other', name: '其他' }
+];
+
+export const SEARCH_HELPER_LIST = [
+  { id: 'new', name: '最新上传' },
+  { id: 'like', name: '点赞最多' }
+];

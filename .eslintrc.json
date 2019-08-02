@@ -15,9 +15,8 @@
     "indent": ["warn", 2],
     "semi": ["warn", "always"],
     "quotes": ["warn", "single"],
-    "linebreak-style": ["error", "unix"],
-    "object-curly-spacing": ["error", "always"],
-    "no-duplicate-imports": ["error", { "includeExports": true }],
-    "no-useless-rename": ["error", { "ignoreImport": true }]
+    "object-curly-spacing": ["warn", "always"],
+    "no-duplicate-imports": ["warn", { "includeExports": true }],
+    "no-useless-rename": ["warn", { "ignoreImport": true }]
   }
 }

@@ -1,0 +1,34 @@
+{% extends "../layout.njk" %}
+
+{% block css %}
+<link rel="stylesheet" href="/css/home.min.css">
+{% endblock %}
+
+{% block content %}
+<div class="category">
+  <ul class="line">
+    {% for item in searchTypeList %}
+      <li class="item">
+        <a class=" {% if item.id === typeId %}active{% endif %}"
+           href="?typeId={{ item.id }}&areaId={{ areaId }}&helperId={{ helperId }}">{{ item.name }}</a>
+      </li>
+    {% endfor %}
+  </ul>
+  <ul class="line">
+    {% for item in searchAreaList %}
+      <li class="item">
+        <a class=" {% if item.id === areaId %}active{% endif %}"
+           href="?typeId={{ typeId }}&areaId={{ item.id }}&helperId={{ helperId }}">{{ item.name }}</a>
+      </li>
+    {% endfor %}
+  </ul>
+  <ul class="line">
+    {% for item in searchHelperList %}
+      <li class="item">
+        <a class=" {% if item.id === helperId %}active{% endif %}"
+           href="?typeId={{ typeId }}&areaId={{ areaId }}&helperId={{ item.id }}">{{ item.name }}</a>
+      </li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}

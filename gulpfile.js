@@ -16,7 +16,7 @@ const PATH = {
     dist:'./dist/img'
   },
   style: {
-    root: './public/style/index.scss',
+    root: './public/style/home.scss',
     src: './public/style/**/*.scss',
     dist: './dist/css'
   },

@@ -1,0 +1,31 @@
+@import "./root";
+
+.category {
+  padding-left: 100px;
+  margin-top: 20px;
+
+  .line {
+    display: flex;
+    margin-top: 30px;
+
+    li.item {
+      margin-right: 20px;
+      a {
+        padding: 8px;
+        color: $content-color;
+        font-size: 18px;
+        &:hover {
+          color: $hover-color;
+        }
+
+        &.active {
+          color: $bg-white;
+          background: $hover-color;
+        }
+      }
+    }
+  }
+
+
+}
+

@@ -50,7 +50,10 @@ app.set('view engine', 'njk');
 
 nunjucks.configure('views', {
   autoescape: true,
-  express: app
+  express: app,
+  noCache: true,
+  IStripBlocks: true,
+  trimBlocks: true
 });
 
 app.use(express.static(path.join(__dirname, 'dist')));
