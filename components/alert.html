@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>alert</title>
+  <link rel="stylesheet" href="../dist/css/components.min.css">
+  <link rel="stylesheet" href="../dist/css/reset.min.css">
+  <script src="../dist/lib/jquery/jquery-3.4.1.min.js"></script>
+</head>
+<body>
+<button id="showMessage">click</button>
+<p>hello</p>
+<p>hello</p>
+<p>hello</p>
+<p>hello</p>
+<p>hello</p>
+<p>hello</p>
+<p>hello</p>
+<p>hello</p>
+<p>hello</p>
+<p>hello</p>
+<p>hello</p>
+<p>hello</p>
+<p>hello</p>
+<p>hello</p>
+<p>hello</p>
+<p>hello</p>
+<p>hello</p>
+<p>hello</p>
+<p>hello</p>
+<p>hello</p>
+<p>hello</p>
+<p>hello</p>
+<p>hello</p>
+<p>hello</p>
+<p>hello</p>
+<p>hello</p>
+<p>hello</p>
+<p>hello</p>
+<p>hello</p>
+<p>hello</p>
+<p>hello</p>
+<script>
+  window.$message = function (options) {
+    let { status = 'success', content = '', duration = 300000 } = options;
+    const MARK_RIGHT = '√';
+    const MARK_WARN = '！';
+    const MARK_WRONG = '×';
+
+    let statusMark = MARK_RIGHT;
+    if (status === 'warning') {
+      statusMark = MARK_WARN;
+    } else if (status === 'error') {
+      statusMark = MARK_WRONG;
+    }
+
+    const HTML = `
+      <p class="g__message__notice__content">
+        <i class="icon ${status}">${statusMark}</i>
+        <span class="content">${content}</span>
+      </p>
+    `;
+
+    let messageWrapper = document.getElementsByClassName('g__message__wrapper')[0];
+
+    if (!messageWrapper) {
+      let newNode = document.createElement('div');
+      newNode.setAttribute('class', 'g__message__wrapper');
+      document.body.appendChild(newNode);
+      messageWrapper = newNode;
+    }
+
+    const $messageDom = document.createElement('div');
+    $messageDom.setAttribute('class', 'g__message__notice');
+    $messageDom.innerHTML = HTML;
+    messageWrapper.appendChild($messageDom);
+
+    setTimeout(() => {
+      messageWrapper.removeChild($messageDom);
+    }, duration);
+
+  };
+
+  window.onload = function () {
+
+    const showMessage = document.getElementById('showMessage');
+
+    showMessage.addEventListener('click', e => {
+      window.$message({
+        status: 'success',
+        content: '成功'
+      });
+      window.$message({
+        status: 'warning',
+        content: '警告'
+      });
+      window.$message({
+        status: 'error',
+        content: '错误'
+      });
+    });
+  };
+</script>
+</body>
+</html>

@@ -31,20 +31,22 @@ const formFields = [
     optionList: searchAreaList
   },
   {
-    id: 'lines',
     title: '剧中台词',
     hasInput: false,
     hasSelect: true,
+    id: 'linesLangId',
+    optionList: languageList,
     hasTextarea: true,
-    optionList: languageList
+    textareaId: 'linesTextareaId'
   },
   {
-    id: 'trans',
     title: '台词翻译',
     hasInput: false,
     hasSelect: true,
+    id: 'transLangId',
+    optionList: languageList,
     hasTextarea: true,
-    optionList: languageList
+    textareaId: 'transTextareaId'
   }
 ];
 

@@ -28,7 +28,7 @@
                 </select>
               {% endif %}
               {% if field.hasTextarea %}
-                <textarea name="{{ field.id }}" id="{{ field.id }}" class="y-textarea" cols="30" rows="10"></textarea>
+                <textarea name="{{ field.textareaId }}" id="{{ field.textareaId }}" class="y-textarea" cols="30" rows="10"></textarea>
               {% endif %}
             </label>
           </p>
@@ -36,9 +36,13 @@
       {% endfor %}
       <section class="line">
         <p class="right">
-          <button class="y-button">投稿</button>
+          <button class="y-button" id="postBtn">投稿</button>
         </p>
       </section>
     </div>
   </div>
+{% endblock %}
+
+{% block js %}
+<script src="/javascript/post.min.js"></script>
 {% endblock %}

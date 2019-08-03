@@ -1,5 +1,6 @@
 const gulp = require('gulp');
 const rename = require('gulp-rename');
+const babel = require('gulp-babel');
 const cache = require('gulp-cache');
 const imageMin = require('gulp-imagemin');
 const sass = require('gulp-sass');
@@ -55,6 +56,9 @@ function style () {
 
 function javascript () {
   return gulp.src(PATH.javascript.src)
+    .pipe(babel({
+      presets: ['@babel/env']
+    }))
     .pipe(uglify())
     .pipe(rename({ suffix: '.min' }))
     .pipe(gulp.dest(PATH.javascript.dist));
