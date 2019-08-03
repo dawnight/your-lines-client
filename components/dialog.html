@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <link rel="stylesheet" href="../dist/css/dialog.min.css">
+  <link rel="stylesheet" href="../dist/css/reset.min.css">
+  <script src="../dist/lib/jquery/jquery-3.4.1.min.js"></script>
+</head>
+<body>
+<div class="wrapper">
+  <button id="openDialogBtn">click</button>
+  <div id="dialog" class="dialog__modal">
+    <div class="dialog__wrapper">
+      <div class="dialog__header">
+        <h2>这个是弹窗组件的 header 区域</h2>
+      </div>
+      <div class="dialog__content">
+        <h2>这个是弹窗组件的 content 区域</h2>
+      </div>
+      <div class="dialog__footer">
+        <h2>
+          <button id="confirm">确认</button>
+          <button id="close">取消</button>
+        </h2>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+
+  function hasClass(elem, className) {
+    let reg = new RegExp('(^|\\s)' + className + '(\\s|$)');
+    return reg.test(elem.className);
+  }
+
+  function addClass(elem, className) {
+    if (hasClass(elem, className)) {
+      return;
+    }
+    let newClassList = elem.className.split(' ');
+    newClassList.push(className);
+    elem.className = newClassList.join(' ');
+  }
+
+  function removeClass(elem, className) {
+    if (!hasClass(elem, className)) {
+      return;
+    }
+    let newClassList = elem.className.split(' ');
+    let markedIndex = newClassList.indexOf(className);
+    newClassList.splice(markedIndex, 1);
+    elem.className = newClassList.join(' ');
+  }
+
+  document.addEventListener('keydown', e => {
+    // 27 -> esc
+    // 32 -> space
+    // 38 -> enter
+    const keyCodes = [27];
+    let keyCode = e.keyCode;
+    if (keyCodes.includes(keyCode)) {
+      closeDialog();
+    }
+  });
+
+  function openDialog(dialog) {
+    dialog = dialog || document.getElementById('dialog');
+    dialog.style.display = 'block';
+    addClass(dialog, 'dialog__open');
+    removeClass(dialog, 'dialog__close');
+  }
+
+  function closeDialog(dialog) {
+    dialog = dialog || document.getElementById('dialog');
+    dialog.style.display = 'block';
+    removeClass(dialog, 'dialog__open');
+    addClass(dialog, 'dialog__close');
+  }
+
+  window.onload = function () {
+    const openDialogBtn = document.getElementById('openDialogBtn');
+    const dialog = document.getElementById('dialog');
+
+    openDialogBtn.addEventListener('click', e => {
+      openDialog(dialog);
+    });
+
+    if (dialog) {
+      const confirm = document.getElementById('confirm');
+      if (confirm) {
+        confirm.addEventListener('click', e => {
+          setTimeout(() => {
+            closeDialog(dialog);
+          }, 1000);
+        });
+      }
+
+      const close = document.getElementById('close');
+      if (close) {
+        close.addEventListener('click', e => {
+          closeDialog(dialog);
+        });
+      }
+    }
+  };
+
+</script>
+</body>
+</html>
