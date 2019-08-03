@@ -15,7 +15,8 @@ export const SEARCH_TYPE_LIST = [
   { id: 'all', name: '全部形式' },
   { id: 'movie', name: '电影' },
   { id: 'tv', name: '电视剧' },
-  { id: 'carton', name: '动漫' }
+  { id: 'carton', name: '动漫' },
+  { id: 'other', name: '其他' },
 ];
 
 export const SEARCH_AREA_LIST = [
@@ -25,7 +26,17 @@ export const SEARCH_AREA_LIST = [
   { id: 'usa', name: '美国' },
   { id: 'japan', name: '日本' },
   { id: 'korea', name: '韩国' },
-  { id: 'other', name: '其他' }
+  { id: 'other', name: '其他' },
+  { id: 'no', name: '未知' },
+];
+
+export const LANGUAGE_LIST = [
+  { id: 'cn', name: '汉语' },
+  { id: 'en', name: '英语' },
+  { id: 'jp', name: '日语' },
+  { id: 'ko', name: '韩语' },
+  { id: 'other', name: '其他' },
+  { id: 'no', name: '未知' }
 ];
 
 export const SEARCH_HELPER_LIST = [

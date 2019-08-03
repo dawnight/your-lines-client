@@ -3,6 +3,7 @@
 body {
   width: 100%;
   background: $bg-color;
+  font-size: 18px;
 }
 
 .container {
@@ -10,7 +11,9 @@ body {
   margin: 0 auto;
 }
 
-.header {
+nav.header {
+  background: red;
+
   .wrapper {
     display: flex;
     justify-content: flex-start;
@@ -35,7 +38,7 @@ body {
       li {
         padding: 4px;
         margin-left: 40px;
-        font-size: 18px;
+        font-size: 1.2rem;
 
         a {
           color: $assist-color;
@@ -47,5 +50,46 @@ body {
         }
       }
     }
+  }
+}
+
+.y {
+  outline: none;
+  border: 1px solid $disable-color;
+  font-size: 1rem;
+}
+
+.y-input {
+  @extend .y;
+  height: 1.5rem;
+  padding: 0.2rem 0.6rem;
+
+  &:hover,
+  &:focus {
+    border: 1px solid $hover-color;
+  }
+}
+
+.y-select {
+  @extend .y;
+  height: 2rem;
+  padding: 0.2rem 0.6rem;
+}
+
+.y-textarea {
+  @extend .y;
+  height: 4rem;
+}
+
+.y-button {
+  text-align: center;
+  border: 1px solid transparent;
+  padding: 5px 15px 6px;
+  font-size: 1rem;
+  cursor: pointer;
+
+  &:hover {
+    background: $hover-color;
+    color: $bg-white;
   }
 }

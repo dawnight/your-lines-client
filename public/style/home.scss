@@ -1,19 +1,19 @@
 @import "./root";
 
 .category {
-  padding-left: 100px;
-  margin-top: 20px;
+  padding-left: 5rem;
+  padding-top: 2rem;
 
   .line {
     display: flex;
-    margin-top: 30px;
+    margin-bottom: 1.5rem;
 
     li.item {
-      margin-right: 20px;
+      margin-right: 1rem;
       a {
-        padding: 8px;
+        padding: 0.2rem 0.5rem;
         color: $content-color;
-        font-size: 18px;
+        font-size: 1rem;
         &:hover {
           color: $hover-color;
         }
@@ -25,7 +25,5 @@
       }
     }
   }
-
-
 }
 

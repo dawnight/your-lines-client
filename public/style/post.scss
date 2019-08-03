@@ -1,0 +1,47 @@
+@import "./root";
+
+.post {
+  padding-left: 10%;
+  padding-top: 2rem;
+
+  .header {
+    margin-bottom: 2rem;
+
+    .title {
+      font-size: 1.4rem;
+      font-weight: bold;
+    }
+  }
+
+  .line {
+    position: relative;
+    padding: 0.5rem 0;
+    margin-bottom: 1rem;
+
+    .left {
+      position: absolute;
+      top: 1.1rem;
+      display: inline-block;
+      font-size: 1rem;
+    }
+
+    .right {
+      position: relative;
+      display: inline-block;
+      margin-left: 6rem;
+
+      select {
+        position: absolute;
+      }
+
+      textarea {
+        width: 20rem;
+        height: 5rem;
+        margin-left: 6rem;
+        padding: 0.5rem;
+        font-size: 1rem;
+      }
+    }
+  }
+
+}

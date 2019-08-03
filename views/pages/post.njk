@@ -1,5 +1,44 @@
 {% extends "../layout.njk" %}
 
+{% block css %}
+  <link rel="stylesheet" href="/css/post.min.css">
+{% endblock %}
+
 {% block content %}
-  <h3>post</h3>
+  <div class="post">
+    <div class="header">
+      <p class="title">欢迎上传你的台词~~</p>
+    </div>
+    <div class="body">
+      {% for field in formFields %}
+        <section class="line">
+          <p class="left">
+            <span>{{ field.title }}</span>
+          </p>
+          <p class="right">
+            <label for="{{ field.id }}">
+              {% if field.hasInput %}
+                <input type="text" id="{{ field.id }}" class="y-input">
+              {% endif %}
+              {% if field.hasSelect %}
+                <select name="{{ field.id }}" id="{{ field.id }}" class="y-select" {% if field.style %} style="position: {{ field.style.position }}" {% endif %}>
+                  {% for option in field.optionList %}
+                    <option value="{{ option.id }}" class="{{ field.className }}">{{ option.name }}</option>
+                  {% endfor %}
+                </select>
+              {% endif %}
+              {% if field.hasTextarea %}
+                <textarea name="{{ field.id }}" id="{{ field.id }}" class="y-textarea" cols="30" rows="10"></textarea>
+              {% endif %}
+            </label>
+          </p>
+        </section>
+      {% endfor %}
+      <section class="line">
+        <p class="right">
+          <button class="y-button">投稿</button>
+        </p>
+      </section>
+    </div>
+  </div>
 {% endblock %}

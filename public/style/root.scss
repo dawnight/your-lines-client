@@ -3,8 +3,8 @@
 $pri-color: #2d8cf0;
 $light-pri-color: #5cadff;
 $dark-pri-color: #2b85e4;
-$hover-color:#2db7f5;
-$success-color:#19be6b;
+$hover-color: #2db7f5;
+$success-color: #19be6b;
 $warn-color: #ff9900;
 $err-color: #ed4014;
 $title-color: #17233d;
@@ -16,6 +16,10 @@ $divide-color: #e8eaec;
 $bg-color: #f8f8f9;
 $shadow-color: #888888;
 
-$base-blue:#0186aa;
+$base-blue: #0186aa;
 $bg-white: #fff;
 $bg-scroll-color: #A4A4A4;
+
+* {
+  font-family: Arial, Helvetica, sans-serif, "宋体";
+}
