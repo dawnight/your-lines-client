@@ -62,7 +62,55 @@ window.$message = function (options) {
 
 };
 
-
 window.CODE_OK = 0;
 
 window.CODE_ERROR = 1;
+
+document.addEventListener('keydown', e => {
+  // 27 -> esc
+  // 32 -> space
+  // 38 -> enter
+  const keyCodes = [27];
+  let keyCode = e.keyCode;
+  if (keyCodes.includes(keyCode)) {
+    closeDialog();
+  }
+});
+
+function openDialog(dialog) {
+  dialog = dialog || document.getElementById('dialog');
+  dialog.style.display = 'block';
+  addClass(dialog, 'dialog__open');
+  removeClass(dialog, 'dialog__close');
+}
+
+function closeDialog(dialog) {
+  console.log('close');
+  console.log(dialog);
+  dialog = dialog || document.getElementById('dialog');
+  dialog.style.display = 'none';
+  removeClass(dialog, 'dialog__open');
+  addClass(dialog, 'dialog__close');
+}
+
+window.onload = function () {
+  const dialog = document.getElementById('dialog');
+
+  if (dialog) {
+    const confirm = document.getElementById('confirm');
+    if (confirm) {
+      confirm.addEventListener('click', () => {
+        setTimeout(() => {
+          closeDialog(dialog);
+        }, 1000);
+      });
+    }
+
+    const close = document.getElementById('close');
+    if (close) {
+      close.addEventListener('click', () => {
+        closeDialog(dialog);
+      });
+    }
+  }
+};

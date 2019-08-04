@@ -82,8 +82,29 @@
         <div id="imageWrapper" class="d-block">
           <section id="X0001">
             <img src="/img/test/1.jpg" alt="">
+            <p class="layer">
+              <span class="zoom" data-id="X0001">放大</span>
+            </p>
             <span class="icons">
               <span class="del" data-id="X0001">X</span>
+            </span>
+          </section>
+          <section id="X0002">
+            <img src="/img/test/1.jpg" alt="">
+            <p class="layer">
+              <span class="zoom" data-id="X0002">放大</span>
+            </p>
+            <span class="icons">
+              <span class="del" data-id="X0002">X</span>
+            </span>
+          </section>
+          <section id="X0003">
+            <img src="/img/test/1.jpg" alt="">
+            <p class="layer">
+              <span class="zoom" data-id="X0003">放大</span>
+            </p>
+            <span class="icons">
+              <span class="del" data-id="X0003">X</span>
             </span>
           </section>
         </div>
@@ -93,11 +114,27 @@
       <button class="btn btn-primary btn-lg btn-block" type="submit">投稿</button>
       <button class="btn btn-primary btn-lg btn-block" id="button" type="button">click</button>
     </form>
+
+    <div id="dialog" class="g__dialog__modal">
+      <div class="dialog__wrapper">
+        <div class="dialog__header"></div>
+        <div class="dialog__content">
+          <img src="" alt="" id="previewPicture">
+        </div>
+        <div class="dialog__footer">
+          <h2>
+            <button id="confirm">确认</button>
+            <button id="close">取消</button>
+          </h2>
+        </div>
+      </div>
+    </div>
+
   </div>
 {% endblock %}
 
 {% block js %}
-<script src="/lib/file-upload-with-preview/file-upload-with-preview-4.0.2.min.js"></script>
+
 <script>
   (function () {
 
@@ -125,40 +162,39 @@
 
     }, false);
 
-    let button = document.getElementById('button');
+    let images = document.getElementById('images');
 
     let imageWrapper = document.getElementById('imageWrapper');
 
-    function previewPicture(file, img) {
+    let dialog = document.getElementById('dialog');
 
-      let reader = new FileReader();
+    function previewPicture () {
 
-      reader.readAsDataURL(file);
-
-      reader.onload = function (ev) {
-        img.src = ev.target.result;
-      }
-    }
-
-    let imageList = [
-      'A0001',
-      'B0001',
-      'C0001',
-      'D0001',
-      'E0001',
-      'F0001',
-      'G0001',
-      'H0001',
-      'I0001',
-    ];
-
-    button.addEventListener('click', e => {
+      let imageList = [
+        'A0001',
+        'B0001',
+        'C0001',
+        'D0001',
+        'E0001',
+        'F0001',
+        'G0001',
+        'H0001',
+        'I0001',
+      ];
 
       let images = document.getElementById('images');
 
       let files = images.files;
 
       let fileLength = files.length;
+
+      if (fileLength > 9) {
+        window.$message({
+          status: 'error',
+          content: '上传图片数量不能超过 9 张'
+        });
+        return false;
+      }
 
       for (let i = 0; i < fileLength; i++) {
 
@@ -170,7 +206,7 @@
 
         let img = new Image();
 
-        previewPicture(file, img);
+        img.src = URL.createObjectURL(file);
 
         sectionHTML.appendChild(img);
 
@@ -192,7 +228,10 @@
 
         imageWrapper.appendChild(sectionHTML);
       }
+    }
 
+    images.addEventListener('change', () => {
+      previewPicture();
     });
 
     imageWrapper.addEventListener('click', e => {
@@ -206,6 +245,23 @@
         let parent = document.getElementById(id);
 
         imageWrapper.removeChild(parent);
+
+      } else if (target.classList.contains('zoom')) {
+
+        dialog.style.display = 'block';
+
+        let id = target.dataset.id;
+
+        let parent = document.getElementById(id);
+
+        let previewPicture = document.getElementById('previewPicture');
+
+        let img = parent.getElementsByTagName('img')[0];
+
+        let dialog__header = document.getElementsByClassName('dialog__header')[0];
+
+        dialog__header.innerHTML = '预览图片';
+        previewPicture.src = img.currentSrc;
       }
     });
 
