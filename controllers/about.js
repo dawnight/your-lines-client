@@ -1,10 +1,10 @@
-import { navList, searchTypeList, logoInfo } from './common';
+import { navList, logoInfo } from './common';
 
 export const renderAbout = (req, res) => {
   res.render('pages/about', {
     navList,
-    searchTypeList,
     logoInfo,
-    page: 'about'
+    page: 'about',
+    user: req.session.user
   });
 };

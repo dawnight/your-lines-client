@@ -1,10 +1,10 @@
-import { navList, searchTypeList, logoInfo } from './common';
+import { navList, logoInfo } from './common';
 
 export const renderTv = (req, res) => {
   res.render('pages/tv', {
     navList,
-    searchTypeList,
     logoInfo,
-    page: 'tv'
+    page: 'tv',
+    user: req.session.user
   });
 };

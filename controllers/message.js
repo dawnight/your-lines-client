@@ -1,10 +1,10 @@
-import { navList, searchTypeList, logoInfo } from './common';
+import { navList, logoInfo } from './common';
 
 export const renderMessage = (req, res) => {
   res.render('pages/message', {
     navList,
-    searchTypeList,
     logoInfo,
-    page: 'message'
+    page: 'message',
+    user: req.session.user
   });
 };

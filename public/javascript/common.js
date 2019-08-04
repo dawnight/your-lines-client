@@ -36,21 +36,33 @@ window.$message = function (options) {
   }
 
   const HTML = `
-      <div class="notice__wrapper">
-        <p class="notice">
-          <i class="icon ${status}">${statusMark}</i>
-          <span class="content">${content}</span>
-        </p>
-      </div>
+      <p class="g__message__notice__content">
+        <i class="icon ${status}">${statusMark}</i>
+        <span class="content">${content}</span>
+      </p>
     `;
 
+  let messageWrapper = document.getElementsByClassName('g__message__wrapper')[0];
+
+  if (!messageWrapper) {
+    let newNode = document.createElement('div');
+    newNode.setAttribute('class', 'g__message__wrapper');
+    document.body.appendChild(newNode);
+    messageWrapper = newNode;
+  }
+
   const $messageDom = document.createElement('div');
+  $messageDom.setAttribute('class', 'g__message__notice');
   $messageDom.innerHTML = HTML;
-  document.body.append($messageDom);
+  messageWrapper.appendChild($messageDom);
 
   setTimeout(() => {
-    document.body.removeChild($messageDom);
+    messageWrapper.removeChild($messageDom);
   }, duration);
 
 };
 
+
+window.CODE_OK = 0;
+
+window.CODE_ERROR = 1;

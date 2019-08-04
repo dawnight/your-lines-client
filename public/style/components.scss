@@ -90,14 +90,14 @@
 
 .g__message__wrapper {
   display: block;
-  background: red;
   position: fixed;
   top: 1.5rem;
   z-index: 100;
+  width: 100%;
 
   .g__message__notice {
     height: 54px;
-    margin: 0 auto;
+   text-align: center;
 
     .g__message__notice__content {
       text-align: center;

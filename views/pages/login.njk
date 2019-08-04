@@ -1,0 +1,97 @@
+{% extends "../layout.njk" %}
+
+{% block content %}
+  <style>
+    .login-wrapper {
+      margin: 2rem auto;
+      padding-top: 3rem;
+      width: 26rem;
+    }
+    #showError {
+      display: none;
+    }
+  </style>
+
+  <div class="login-wrapper">
+    <div>
+      <div class="form-group row">
+        <label for="email" class="col-md-3 col-sm-4 col-form-label">邮箱</label>
+        <div class="col-md-9 col-sm-8">
+          <input name="email" type="text" class="form-control" id="email">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="password" class="col-md-3 col-sm-4 col-form-label">密码</label>
+        <div class="col-md-9 col-sm-8">
+          <input name="password" type="password" class="form-control" id="password">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label"></label>
+        <input type='submit' class='btn btn-primary' id="login" value='登录'/>
+        <label class="col-sm-8 col-form-label">
+          <a href="/user/signUp">没有账号，前去注册</a>
+        </label>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block js %}
+<script src="/lib/validator.min.js"></script>
+<script>
+  let email = document.getElementById('email');
+  let password = document.getElementById('password');
+  let login = document.getElementById('login');
+
+  function showErrorMessage(el, msg) {
+    window.$message({
+      status: 'error',
+      content: msg
+    });
+    throw new Error('表单填写错误');
+  }
+
+  if (login) {
+    login.addEventListener('click', e => {
+
+      e.preventDefault();
+
+      let params = {
+        email: email.value,
+        password: password.value
+      };
+
+      if (validator.isEmpty(params.password)) {
+        showErrorMessage(showError, '密码不能为空');
+      }
+
+      $.ajax({
+        url: '/user/login',
+        method: 'POST',
+        data: params,
+        success (data) {
+          console.log(data);
+          if (data.status === window.CODE_OK) {
+            window.$message({
+              status: 'success',
+              content: data.msg
+            });
+            location.href = '/';
+          } else {
+            window.$message({
+              status: 'error',
+              content: data.msg
+            });
+          }
+        },
+        failed (data) {
+          console.log(data);
+        }
+      });
+    });
+  }
+
+</script>
+{% endblock %}
+

@@ -1,22 +1,22 @@
 <nav class="header">
-  <div class="wrapper">
-    <div class="logo-wrapper">
+  <div class="logo-wrapper">
+    <a href="/">
       <img src="{{ logoInfo.url }}" alt="{{ logoInfo.alt }}" class="logo">
-    </div>
-    <ul class="nav">
-      {% for item in navList %}
-        <li class="nav-item">
-          <a href="{{ item.href }}" class="nav-link {% if page === item.id %} active {% endif %}">{{ item.name }}</a>
-        </li>
-      {% endfor %}
-      <li class="nav-item">
-        <div class="search">
-
-        </div>
-      </li>
-    </ul>
-    <div class="profile">
-
-    </div>
+    </a>
   </div>
+  <ul class="nav">
+    {% for item in navList %}
+      <li class="nav-item">
+        <a href="{{ item.href }}" class="nav-link {% if page === item.id %} active {% endif %}">{{ item.name }}</a>
+      </li>
+    {% endfor %}
+    <li class="nav-item">
+      {% if user %}
+        <a href="/user/logout" class="nav-link {% if page === 'user' %} active {% endif %}">退出</a>
+      {% else %}
+        <a href="/user/login" class="nav-link {% if page === 'user' %} active {% endif %}">登录</a>
+      {% endif %}
+
+    </li>
+  </ul>
 </nav>

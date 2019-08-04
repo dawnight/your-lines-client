@@ -1,5 +1,5 @@
 import { navList, logoInfo } from './common';
-import { SEARCH_TYPE_LIST, SEARCH_AREA_LIST, SEARCH_HELPER_LIST } from '../config';
+import { SEARCH_TYPE_LIST, SEARCH_AREA_LIST, SEARCH_HELPER_LIST } from '../config/constant';
 
 const searchTypeList = SEARCH_TYPE_LIST;
 const searchAreaList = SEARCH_AREA_LIST;
@@ -18,6 +18,7 @@ export const renderHome = (req, res) => {
     logoInfo,
     typeId,
     areaId,
-    helperId
+    helperId,
+    user: req.session.user
   });
 };

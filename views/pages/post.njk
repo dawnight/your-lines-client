@@ -1,7 +1,6 @@
 {% extends "../layout.njk" %}
 
 {% block css %}
-  <link rel="stylesheet" href="/css/post.min.css">
 {% endblock %}
 
 {% block content %}
@@ -10,30 +9,77 @@
       <p class="title">欢迎上传你的台词~~</p>
     </div>
     <div class="body">
-      {% for field in formFields %}
-        <section class="line">
-          <p class="left">
-            <span>{{ field.title }}</span>
-          </p>
-          <p class="right">
-            <label for="{{ field.id }}">
-              {% if field.hasInput %}
-                <input type="text" id="{{ field.id }}" class="y-input">
-              {% endif %}
-              {% if field.hasSelect %}
-                <select name="{{ field.id }}" id="{{ field.id }}" class="y-select" {% if field.style %} style="position: {{ field.style.position }}" {% endif %}>
-                  {% for option in field.optionList %}
-                    <option value="{{ option.id }}" class="{{ field.className }}">{{ option.name }}</option>
-                  {% endfor %}
-                </select>
-              {% endif %}
-              {% if field.hasTextarea %}
-                <textarea name="{{ field.textareaId }}" id="{{ field.textareaId }}" class="y-textarea" cols="30" rows="10"></textarea>
-              {% endif %}
-            </label>
-          </p>
-        </section>
-      {% endfor %}
+      <form class="form-inline">
+        <div class="row">
+          <div class="col-md-2 col-xs-6">
+            <span>原剧剧名</span>
+          </div>
+          <div class="col-md-8 col-xs-6">
+            <input type="text" class="form-control" id="nameOrigin">
+          </div>
+        </div>
+      </form>
+
+
+      <section class="line">
+        <p class="left">
+          <span>原剧剧名</span>
+        </p>
+        <p class="right">
+          <input type="text" id="nameOrigin" class="y-input">
+        </p>
+      </section>
+      <section class="line">
+        <p class="left">
+          <span>中文剧名</span>
+        </p>
+        <p class="right">
+          <input type="text" id="nameCn" class="y-input">
+        </p>
+      </section>
+      <section class="line">
+        <p class="left">
+          <span>所在地区</span>
+        </p>
+        <p class="right">
+          <label for="areaId">
+            <select id="areaId" class="y-select" style="position: relative;">
+              <option selected="selected" value="mainland" class="y-select">中国大陆</option>
+              {% for option in uploadAreaList %}
+                <option value="{{ option.id }}" class="y-select">{{ option.name }}</option>
+              {% endfor %}
+            </select>
+          </label>
+        </p>
+      </section>
+      <section class="line">
+        <p class="left">
+          <span>剧中台词</span>
+        </p>
+        <p class="right">
+          <select id="linesLangId" class="y-select">
+            <option selected="selected" value="cn" class="y-select">汉语</option>
+            {% for option in uploadLanguageList %}
+              <option value="{{ option.id }}" class="y-select">{{ option.name }}</option>
+            {% endfor %}
+          </select>
+          <textarea id="linesTextId" class="y-textarea" cols="30" rows="10"></textarea>
+        </p>
+      </section>
+      <section class="line">
+        <p class="left">
+          <span>台词翻译</span>
+        </p>
+        <p class="right">
+          <select name="transLang" id="transLangId" class="y-select">
+            <option selected="selected" value="cn" class="y-select">汉语</option>
+            {% for option in uploadLanguageList %}
+              <option value="{{ option.id }}" class="y-select">{{ option.name }}</option>
+            {% endfor %}
+          </select>
+          <textarea name="linesTrans" id="linesTransId" class="y-textarea" cols="30" rows="10"></textarea>
+        </p>
+      </section>
       <section class="line">
         <p class="right">
           <button class="y-button" id="postBtn">投稿</button>
@@ -44,5 +90,5 @@
 {% endblock %}
 
 {% block js %}
-<script src="/javascript/post.min.js"></script>
+  <script src="/javascript/post.min.js"></script>
 {% endblock %}
