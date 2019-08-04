@@ -10,13 +10,19 @@
         <a href="{{ item.href }}" class="nav-link {% if page === item.id %} active {% endif %}">{{ item.name }}</a>
       </li>
     {% endfor %}
-    <li class="nav-item">
-      {% if user %}
-        <a href="/user/logout" class="nav-link {% if page === 'user' %} active {% endif %}">退出</a>
-      {% else %}
-        <a href="/user/login" class="nav-link {% if page === 'user' %} active {% endif %}">登录</a>
-      {% endif %}
 
+    {% if user %}
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">用户中心</a>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" href="/user/center">个人信息</a>
+          <a class="dropdown-item" href="/user/logout">退出</a>
+        </div>
+      </li>
+    {% else %}
+    <li class="nav-item">
+      <a href="/user/login" class="nav-link {% if page === 'user' %} active {% endif %}">登录</a>
     </li>
+    {% endif %}
   </ul>
 </nav>

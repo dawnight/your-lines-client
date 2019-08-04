@@ -1,16 +1,6 @@
 import { navList, logoInfo } from './common';
 import UserModel from '../model/schema/user';
-import { SEARCH_TYPE_LIST, SEARCH_AREA_LIST, SEARCH_HELPER_LIST } from '../config/constant';
 import { STATUS } from '../config/basic';
-
-const searchTypeList = SEARCH_TYPE_LIST;
-const searchAreaList = SEARCH_AREA_LIST;
-const searchHelperList = SEARCH_HELPER_LIST;
-/*
-* 整理注册登录的流程
-* 注册流程：进入注册页面，注册成功后，跳转到注册提示页面，
-*
-* */
 
 export const renderLogin = (req, res) => {
   res.render('pages/login', {
@@ -112,4 +102,13 @@ export const login = async (req, res) => {
     });
   }
 
+};
+
+export const renderUser = (req, res) => {
+  res.render('pages/user', {
+    navList,
+    logoInfo,
+    page: 'user',
+    user: req.session.user
+  });
 };

@@ -29,4 +29,5 @@ export default app => {
   app.get('/user/logout', wrap(User.renderLogout));
   app.post('/user/signUp', wrap(User.signUp));
   app.post('/user/login', wrap(User.login));
+  app.get('/user/center', wrap(User.renderUser));
 };
