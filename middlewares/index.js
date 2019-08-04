@@ -4,6 +4,7 @@ import morgan from 'morgan';
 import log4js from 'log4js';
 import logger from '../helpers/logger';
 import redisStore from 'connect-redis';
+import flash from 'connect-flash';
 
 export default app => {
   app.use(morgan(function (tokens, req, res) {
@@ -40,5 +41,8 @@ export default app => {
     },
     store: new Store()
   }));
+
+  app.use(flash());
+
 };
 

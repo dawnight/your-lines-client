@@ -14,33 +14,39 @@
   </style>
 
   <div class="login-wrapper">
-    <div>
+    <form action="/user/signUp" method="post">
       <div class="form-group row">
         <label for="email" class="col-md-3 col-sm-4 col-form-label">邮箱</label>
         <div class="col-md-9 col-sm-8">
-          <input type="email" class="form-control" id="email">
+          <input type="email" value="{{ email }}" class="form-control" name="email">
         </div>
       </div>
       <div class="form-group row">
         <label for="password" class="col-md-3 col-sm-4 col-form-label">密码</label>
         <div class="col-md-9 col-sm-8">
-          <input type="password" class="form-control" id="password">
+          <input type="password" class="form-control" name="password">
         </div>
       </div>
       <div class="form-group row">
         <label for="rePassword" class="col-md-3 col-sm-4 col-form-label">确认密码</label>
         <div class="col-md-9 col-sm-8">
-          <input type="password" class="form-control" id="rePassword">
+          <input type="password" class="form-control" name="rePassword">
         </div>
       </div>
       <div class="form-group row">
         <label class="col-sm-2 col-form-label"></label>
-        <button type="button" class="btn btn-primary" id="signUp">注册</button>
+        <button type="submit" class="btn btn-primary">注册</button>
         <label class="col-sm-8 col-form-label">
           <a href="/user/login">已账号，直接登录</a>
         </label>
       </div>
-    </div>
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label"></label>
+        {% if error %}
+          <p>{{ error }}</p>
+        {% endif %}
+      </div>
+    </form>
     <div id="showError" class="alert alert-danger"></div>
     <div id="showSuccess" class="alert alert-success"></div>
   </div>
@@ -49,79 +55,4 @@
 
 {% block js %}
 <script src="/lib/validator.min.js"></script>
-<script>
-  let email = document.getElementById('email');
-  let password = document.getElementById('password');
-  let rePassword = document.getElementById('rePassword');
-  let signUp = document.getElementById('signUp');
-  let showError = document.getElementById('showError');
-
-  function showErrorMessage(el, msg) {
-    window.$message({
-      status: 'error',
-      content: msg
-    });
-    throw new Error('表单填写错误');
-  }
-
-  signUp.addEventListener('click', e => {
-
-    const MIN_LEN = 8;
-
-    e.preventDefault();
-
-    let params = {
-      email: email.value,
-      password: password.value,
-      rePassword: rePassword.value,
-    };
-
-    let options = {
-      min: MIN_LEN,
-      max: undefined
-    };
-
-    if (!validator.isLength(params.email, options)) {
-      showErrorMessage(showError, `邮箱长度必须超过 ${MIN_LEN} 位`);
-    }
-
-    if (validator.isEmpty(params.password)) {
-      showErrorMessage(showError, '密码不能为空');
-    }
-
-    if (!validator.isLength(params.password, options)) {
-      showErrorMessage(showError, `密码长度必须超过 ${MIN_LEN} 位`);
-    }
-
-    if (!validator.equals(params.password, params.rePassword)) {
-      showErrorMessage(showError, '两次输入的密码不一致');
-    }
-
-    $.ajax({
-      url: '/user/signUp',
-      method: 'POST',
-      data: params,
-      success (data) {
-        console.log(data);
-        if (data.status === window.CODE_OK) {
-          window.$message({
-            status: 'success',
-            content: data.msg
-          });
-        } else {
-          window.$message({
-            status: 'error',
-            content: data.msg
-          });
-        }
-      },
-      failed (data) {
-        window.$message({
-          status: 'error',
-          content: data.msg
-        });
-      }
-    });
-  });
-</script>
 {% endblock %}

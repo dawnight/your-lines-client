@@ -13,27 +13,34 @@
   </style>
 
   <div class="login-wrapper">
-    <div>
+    <form action="/user/login" method="post">
       <div class="form-group row">
         <label for="email" class="col-md-3 col-sm-4 col-form-label">邮箱</label>
         <div class="col-md-9 col-sm-8">
-          <input name="email" type="text" class="form-control" id="email">
+          <input name="email" value="mark@mark.com" type="text" class="form-control">
         </div>
       </div>
       <div class="form-group row">
         <label for="password" class="col-md-3 col-sm-4 col-form-label">密码</label>
         <div class="col-md-9 col-sm-8">
-          <input name="password" type="password" class="form-control" id="password">
+          <input name="password" value="mark@mark.com" type="password" class="form-control">
         </div>
       </div>
       <div class="form-group row">
         <label class="col-sm-2 col-form-label"></label>
-        <input type='submit' class='btn btn-primary' id="login" value='登录'/>
+        <input type='submit' class='btn btn-primary' value='登录'/>
         <label class="col-sm-8 col-form-label">
           <a href="/user/signUp">没有账号，前去注册</a>
         </label>
       </div>
-    </div>
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label"></label>
+        {% if error %}
+          <p>{{ error }}</p>
+        {% endif %}
+      </div>
+
+    </form>
   </div>
 {% endblock %}
 
@@ -42,7 +49,7 @@
 <script>
   let email = document.getElementById('email');
   let password = document.getElementById('password');
-  let login = document.getElementById('login');
+  let login = document.getElementById('login1');
 
   function showErrorMessage(el, msg) {
     window.$message({

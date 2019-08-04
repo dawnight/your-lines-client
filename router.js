@@ -4,6 +4,7 @@ import * as Message from './controllers/message';
 import * as Post from './controllers/post';
 import * as TV from './controllers/tv';
 import * as User from './controllers/user';
+import auth from './middlewares/auth';
 
 const wrap = fn => (...args) => Promise.resolve(fn(...args)).catch(args[2]);
 
@@ -18,7 +19,7 @@ export default app => {
   app.get('/message', wrap(Message.renderMessage));
 
   /*** POST PAGE ROUTER ***/
-  app.get('/post', wrap(Post.renderPost));
+  app.get('/post', auth, wrap(Post.renderPost));
 
   /*** TV PAGE ROUTER ***/
   app.get('/tv', wrap(TV.renderTv));
@@ -29,5 +30,5 @@ export default app => {
   app.get('/user/logout', wrap(User.renderLogout));
   app.post('/user/signUp', wrap(User.signUp));
   app.post('/user/login', wrap(User.login));
-  app.get('/user/center', wrap(User.renderUser));
+  app.get('/user/center', auth, wrap(User.renderUser));
 };

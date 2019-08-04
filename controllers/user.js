@@ -1,13 +1,14 @@
 import { navList, logoInfo } from './common';
 import UserModel from '../model/schema/user';
-import { STATUS } from '../config/basic';
 
 export const renderLogin = (req, res) => {
   res.render('pages/login', {
     navList,
     logoInfo,
     page: 'user',
-    user: req.session.user
+    user: req.session.user,
+    error: req.flash('error'),
+    email: req.flash('email')
   });
 };
 
@@ -17,8 +18,11 @@ export const renderSignUp = (req, res) => {
     navList,
     logoInfo,
     page: 'user',
-    user: req.session.user
+    user: req.session.user,
+    error: req.flash('error'),
+    email: req.flash('email')
   });
+
 };
 
 export const renderLogout = (req, res) => {
@@ -27,46 +31,56 @@ export const renderLogout = (req, res) => {
 };
 
 export const signUp = async (req, res) => {
+
   const { email, password, rePassword } = req.body;
 
   if (password !== rePassword) {
-    res.status = 400;
-    return res.json({
-      msg: '两次输入的密码不一致'
-    });
+
+    req.flash('error', '两次输入的密码不一致');
+
+    req.flash('email', email);
+
+    return res.redirect('/user/signUp');
+
   }
   try {
+
     let user = await UserModel.findOne({ email });
 
     if (user) {
-      return res.json({
-        msg: '邮箱已被占用',
-        status: STATUS.CODE_ERROR
-      });
+
+      req.flash('error', '邮箱已被占用');
+
+      req.flash('email', email);
+
+      return res.redirect('/user/signUp');
     }
 
     user = await UserModel.create({ email, password });
 
-    res.json({
-      data: user,
-      msg: '注册成功',
-      status: STATUS.CODE_OK
-    });
+    req.session.user = user;
+
+    return res.redirect('/');
 
   } catch (err) {
-    res.status = 500;
-    return res.json({
-      msg: err,
-      status: STATUS.CODE_ERROR
-    });
+
+    req.flash('error', '服务出错');
+
+    return res.redirect('/user/signUp');
   }
 };
 
 export const login = async (req, res) => {
+
   const { email, password } = req.body;
 
+  console.log(email, password);
+
   try {
+
     let user = await UserModel.findOne({ email });
+
+    console.log(user);
 
     if (user) {
       user.comparePassword(password, user.password, (err, match) => {
@@ -75,31 +89,32 @@ export const login = async (req, res) => {
 
           req.session.user = new UserModel(user);
 
-          res.json({
-            msg: '登录成功',
-            status: STATUS.CODE_OK
-          });
+          req.flash('success', '登录成功');
+
+          res.redirect('/');
 
         } else {
-          return res.json({
-            msg: '用户名或密码错误',
-            status: STATUS.CODE_ERROR
-          });
+
+          req.flash('error', '用户名或密码错误');
+
+          req.flash('email', email);
+
+          return res.redirect('/user/login');
+
         }
       });
     } else {
-      res.status = 400;
-      return res.json({
-        msg: '用户未注册',
-        status: STATUS.CODE_ERROR
-      });
+
+      req.flash('error', '用户不存在');
+
+      return res.redirect('/user/login');
+
     }
   } catch (err) {
-    res.status = 500;
-    return res.json({
-      msg: err,
-      status: STATUS.CODE_ERROR
-    });
+
+    req.flash('error', '服务出错');
+
+    return res.redirect('/user/login');
   }
 
 };
