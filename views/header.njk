@@ -1,28 +1,33 @@
-<nav class="header">
-  <div class="logo-wrapper">
-    <a href="/">
-      <img src="{{ logoInfo.url }}" alt="{{ logoInfo.alt }}" class="logo">
-    </a>
-  </div>
-  <ul class="nav">
-    {% for item in navList %}
-      <li class="nav-item">
-        <a href="{{ item.href }}" class="nav-link {% if page === item.id %} active {% endif %}">{{ item.name }}</a>
-      </li>
-    {% endfor %}
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+  <a class="navbar-brand" href="/">LOGO</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbars" aria-controls="navbars" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
 
-    {% if user %}
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">用户中心</a>
-        <div class="dropdown-menu">
-          <a class="dropdown-item" href="/user/center">个人信息</a>
-          <a class="dropdown-item" href="/user/logout">退出</a>
-        </div>
-      </li>
-    {% else %}
-    <li class="nav-item">
-      <a href="/user/login" class="nav-link {% if page === 'user' %} active {% endif %}">登录</a>
-    </li>
-    {% endif %}
-  </ul>
+  <div class="collapse navbar-collapse" id="navbars">
+    <ul class="navbar-nav mr-auto">
+      {% for item in navList %}
+        <li class="nav-item">
+          <a href="{{ item.href }}" class="nav-link {% if page === item.id %} active {% endif %}">{{ item.name }}</a>
+        </li>
+      {% endfor %}
+      {% if user %}
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">用户中心</a>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="/user/center">个人信息</a>
+            <a class="dropdown-item" href="/user/logout">退出</a>
+          </div>
+        </li>
+      {% else %}
+        <li class="nav-item">
+          <a href="/user/login" class="nav-link {% if page === 'user' %} active {% endif %}">登录</a>
+        </li>
+      {% endif %}
+    </ul>
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+  </div>
 </nav>
