@@ -2,7 +2,6 @@
 
 {% block css %}
   <link rel="stylesheet" href="/css/post.min.css">
-  <link rel="stylesheet" href="/lib/file-upload-with-preview/file-upload-with-preview-4.0.2.min.css">
 {% endblock %}
 
 {% block content %}
@@ -72,64 +71,20 @@
       <div class="row mb-3">
         <label for="images" class="mb-2">剧中截图</label>
         <div class="custom-file">
-          <label class="custom-file-label" for="images">选择截图
+          <label class="custom-file-label" for="images">选择截图（最多上传 9 张）
             <input type="file" multiple class="custom-file-input" name="images" id="images">
           </label>
         </div>
       </div>
 
       <div class="row mb-3">
-        <div id="imageWrapper" class="d-block">
-          <section id="X0001">
-            <img src="/img/test/1.jpg" alt="">
-            <p class="layer">
-              <span class="zoom" data-id="X0001">放大</span>
-            </p>
-            <span class="icons">
-              <span class="del" data-id="X0001">X</span>
-            </span>
-          </section>
-          <section id="X0002">
-            <img src="/img/test/1.jpg" alt="">
-            <p class="layer">
-              <span class="zoom" data-id="X0002">放大</span>
-            </p>
-            <span class="icons">
-              <span class="del" data-id="X0002">X</span>
-            </span>
-          </section>
-          <section id="X0003">
-            <img src="/img/test/1.jpg" alt="">
-            <p class="layer">
-              <span class="zoom" data-id="X0003">放大</span>
-            </p>
-            <span class="icons">
-              <span class="del" data-id="X0003">X</span>
-            </span>
-          </section>
-        </div>
+        <div id="imageWrapper" class="d-block"></div>
       </div>
 
       <hr class="mb-4">
       <button class="btn btn-primary btn-lg btn-block" type="submit">投稿</button>
       <button class="btn btn-primary btn-lg btn-block" id="button" type="button">click</button>
     </form>
-
-    <div id="dialog" class="g__dialog__modal">
-      <div class="dialog__wrapper">
-        <div class="dialog__header"></div>
-        <div class="dialog__content">
-          <img src="" alt="" id="previewPicture">
-        </div>
-        <div class="dialog__footer">
-          <h2>
-            <button id="confirm">确认</button>
-            <button id="close">取消</button>
-          </h2>
-        </div>
-      </div>
-    </div>
-
   </div>
 {% endblock %}
 
@@ -166,9 +121,7 @@
 
     let imageWrapper = document.getElementById('imageWrapper');
 
-    let dialog = document.getElementById('dialog');
-
-    function previewPicture () {
+    function previewPicture (imageLength) {
 
       let imageList = [
         'A0001',
@@ -186,13 +139,10 @@
 
       let files = images.files;
 
-      let fileLength = files.length;
+      let fileLength = files.length + imageLength;
 
       if (fileLength > 9) {
-        window.$message({
-          status: 'error',
-          content: '上传图片数量不能超过 9 张'
-        });
+        window.$message('上传图片数量不能超过 9 张');
         return false;
       }
 
@@ -230,8 +180,14 @@
       }
     }
 
+    function queryChildrenLength(el) {
+      el = el || document.getElementById('imageWrapper');
+      return el.children.length;
+    }
+
     images.addEventListener('change', () => {
-      previewPicture();
+      let imageLength = queryChildrenLength();
+      previewPicture(imageLength);
     });
 
     imageWrapper.addEventListener('click', e => {
@@ -246,22 +202,6 @@
 
         imageWrapper.removeChild(parent);
 
-      } else if (target.classList.contains('zoom')) {
-
-        dialog.style.display = 'block';
-
-        let id = target.dataset.id;
-
-        let parent = document.getElementById(id);
-
-        let previewPicture = document.getElementById('previewPicture');
-
-        let img = parent.getElementsByTagName('img')[0];
-
-        let dialog__header = document.getElementsByClassName('dialog__header')[0];
-
-        dialog__header.innerHTML = '预览图片';
-        previewPicture.src = img.currentSrc;
       }
     });
 

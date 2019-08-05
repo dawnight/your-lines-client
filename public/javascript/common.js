@@ -23,21 +23,14 @@ function removeClass(elem, className) {
 }
 
 window.$message = function (options) {
-  let { status = 'success', content = '', duration = 3000 } = options;
-  const MARK_RIGHT = '√';
-  const MARK_WARN = '！';
-  const MARK_WRONG = '×';
+  let { status = 'danger', content = '', duration = 3000 } = options;
 
-  let statusMark = MARK_RIGHT;
-  if (status === 'warning') {
-    statusMark = MARK_WARN;
-  } else if (status === 'error') {
-    statusMark = MARK_WRONG;
+  if (typeof options === 'string') {
+    content = options;
   }
 
   const HTML = `
-      <p class="g__message__notice__content">
-        <i class="icon ${status}">${statusMark}</i>
+      <p class="g__message__notice__content alert alert-${status}">
         <span class="content">${content}</span>
       </p>
     `;

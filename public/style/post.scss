@@ -28,21 +28,23 @@
     min-height: 2rem;
   }
 
+  #uploadMsg {
+    display: none;
+    margin-top: 1rem;
+  }
+
   #imageWrapper {
     section {
       float: left;
       position: relative;
 
       &:hover {
-        cursor: pointer;
 
         .icons {
           display: block;
+          cursor: pointer;
         }
 
-        .layer {
-          display: block;
-        }
       }
 
       img {
@@ -50,28 +52,6 @@
         height: 12rem;
         margin: 0.5rem;
         border: 1px solid $assist-color;
-      }
-
-      .layer {
-        display: none;
-        position: absolute;
-        top:  0.5rem;
-        left: 0.5rem;
-        width: 12rem;
-        height: 12rem;
-        background: rgba(0, 0, 0, 0.2);
-
-        .zoom {
-          position: absolute;
-          width: 6rem;
-          height: 3rem;
-          line-height: 3rem;
-          top: 4rem;
-          left: 3rem;
-          text-align: center;
-          border-radius: 50% / 50%;
-          background: $border-color;
-        }
       }
 
       .icons {
