@@ -5,6 +5,9 @@ import * as Post from './controllers/post';
 import * as TV from './controllers/tv';
 import * as User from './controllers/user';
 import auth from './middlewares/auth';
+import validate from 'express-validation';
+
+import { post } from './validation';
 
 const wrap = fn => (...args) => Promise.resolve(fn(...args)).catch(args[2]);
 
@@ -20,6 +23,7 @@ export default app => {
 
   /*** POST PAGE ROUTER ***/
   app.get('/post', auth, wrap(Post.renderPost));
+  app.post('/post/Lines', auth, validate(post.postLines), wrap(Post.postLines));
 
   /*** TV PAGE ROUTER ***/
   app.get('/tv', wrap(TV.renderTv));

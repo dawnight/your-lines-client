@@ -11,16 +11,16 @@ export const NAV_LIST = [
   { id: 'about', href: '/about', name: '关于' }
 ];
 
-export const UPLOAD_TYPE_LIST = [
+export const UPLOAD_FORMAL_LIST = [
   { id: 'movie', name: '电影' },
   { id: 'tv', name: '电视剧' },
   { id: 'carton', name: '动漫' },
   { id: 'other', name: '其他' }
 ];
 
-export const SEARCH_TYPE_LIST = [
+export const SEARCH_FORMAL_LIST = [
   { id: 'all', name: '全部形式' },
-  ...UPLOAD_TYPE_LIST
+  ...UPLOAD_FORMAL_LIST
 ];
 
 export const UPLOAD_AREA_LIST = [

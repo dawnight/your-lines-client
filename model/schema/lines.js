@@ -1,10 +1,20 @@
 import mongoose from 'mongoose';
+import { COMMON_FIELDS } from './baseInfo';
 
 const Schema = mongoose.Schema;
 const ObjectId = Schema.Types.ObjectId;
 
 const LinesSchema = new Schema({
   uploader: { type: ObjectId, ref: 'user', required: true },
+  nameOrigin: { type:String, required: true },
+  nameCn: { type:String, required: true },
+  areaId: { type:String, required: true },
+  languageId: { type:ObjectId, required: true },
+  linesText: { type:String, required: true },
+  transLangId: { type:ObjectId, required: true },
+  transText: { type:String, required: true },
+  images: [ObjectId],
+  ...COMMON_FIELDS
 });
 
 let LinesModel = mongoose.model('lines', LinesSchema);

@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 import { formatTime, randomString } from '../../helpers/utils';
+import { COMMON_FIELDS } from './baseInfo';
 
 const Schema = mongoose.Schema;
 const SAFE_WORK_FACTOR = 5;
@@ -13,10 +14,7 @@ const UserSchema = new Schema({
   avatarUrl: { type: String, required: false },
   phone: { type: String, required: false },
   isActivated: { type: Boolean, default: false, select: false },
-  isDisabled: { type: Boolean, default: false, select: false },
-  createTime: { type: Date, default: Date.now() },
-  updateTime: { type: Date, default: Date.now(), select: false },
-  remark: { type: String, required: false }
+  ...COMMON_FIELDS
 });
 
 UserSchema.pre('save', function(next) {

@@ -9,23 +9,23 @@
     <div class="header">
       <p class="title">欢迎上传你的台词~~</p>
     </div>
-    <form class="needs-validation" novalidate>
+    <form class="needs-validation" novalidate action="/post/lines" enctype="multipart/form-data" method="post">
 
       <div class="row mb-3">
         <label for="nameOrigin" class="mb-2">原剧剧名</label>
-        <input type="text" class="form-control" id="nameOrigin" required>
+        <input type="text" class="form-control" name="nameOrigin" required>
         <div class="invalid-feedback" style="width: 100%;">请输入原剧剧名</div>
       </div>
 
       <div class="row mb-3">
         <label for="nameCn" class="mb-2">中文剧名</label>
-        <input type="text" class="form-control" id="nameCn" required>
+        <input type="text" class="form-control" name="nameCn" required>
         <div class="invalid-feedback" style="width: 100%;">请输入中文剧名</div>
       </div>
 
       <div class="row mb-3">
         <label for="areaId" class="mb-2">所在地区</label>
-        <select class="custom-select d-block w-100" id="areaId" required>
+        <select class="custom-select d-block w-100" name="areaId" required>
           <option selected="selected" value="mainland">中国大陆</option>
           {% for option in uploadAreaList %}
             <option value="{{ option.id }}">{{ option.name }}</option>
@@ -36,7 +36,7 @@
 
       <div class="row mb-3">
         <label for="linesLangId" class="mb-2">剧中台词语言</label>
-        <select class="custom-select d-block w-100" id="linesLangId" required>
+        <select class="custom-select d-block w-100" name="linesLangId" required>
           <option selected="selected" value="cn">汉语</option>
           {% for option in uploadLanguageList %}
             <option value="{{ option.id }}" class="y-select">{{ option.name }}</option>
@@ -46,14 +46,14 @@
       </div>
 
       <div class="row mb-3">
-        <label for="linesTextId" class="mb-2">剧中台词</label>
-        <textarea class="form-control" value="" id="linesTextId" rows="3" required></textarea>
+        <label for="linesText" class="mb-2">剧中台词</label>
+        <textarea class="form-control" value="" name="linesText" rows="3" required></textarea>
         <div class="invalid-feedback" style="width: 100%;">请输入剧中台词</div>
       </div>
 
       <div class="row mb-3">
         <label for="transLangId" class="mb-2">台词翻译语言</label>
-        <select class="custom-select d-block w-100" id="transLangId" required>
+        <select class="custom-select d-block w-100" name="transLangId" required>
           <option selected="selected" value="cn">汉语</option>
           {% for option in uploadLanguageList %}
             <option value="{{ option.id }}" class="y-select">{{ option.name }}</option>
@@ -64,7 +64,7 @@
 
       <div class="row mb-3">
         <label for="transText" class="mb-2">台词翻译</label>
-        <textarea class="form-control" value="" id="transText" rows="3" required></textarea>
+        <textarea class="form-control" value="" name="transText" rows="3" required></textarea>
         <div class="invalid-feedback" style="width: 100%;">请输入台词翻译</div>
       </div>
 
@@ -82,8 +82,7 @@
       </div>
 
       <hr class="mb-4">
-      <button class="btn btn-primary btn-lg btn-block" type="submit">投稿</button>
-      <button class="btn btn-primary btn-lg btn-block" id="button" type="button">click</button>
+      <button class="btn btn-primary btn-lg btn-block" type="submit" id="postBtn">投稿</button>
     </form>
   </div>
 {% endblock %}
@@ -118,6 +117,7 @@
     }, false);
 
     let images = document.getElementById('images');
+    let postBtn = document.getElementById('postBtn');
 
     let imageWrapper = document.getElementById('imageWrapper');
 
@@ -204,6 +204,31 @@
 
       }
     });
+
+    // postBtn.addEventListener('click', e => {
+    //   e.preventDefault();
+    //
+    //   let form = new FormData();
+    //
+    //   let paramsList = [
+    //     'nameOrigin',
+    //     'nameCn',
+    //     'areaId',
+    //     'linesLangId',
+    //     'linesText',
+    //     'transLangId',
+    //     'transText'
+    //   ];
+    //
+    //   paramsList.forEach(item => {
+    //     let value = document.getElementById(item).value;
+    //     form.append(item, value);
+    //   });
+    //
+    //   console.log(form);
+    //
+    //
+    // });
 
 
   })();
