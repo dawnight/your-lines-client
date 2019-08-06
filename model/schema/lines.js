@@ -9,11 +9,11 @@ const LinesSchema = new Schema({
   nameOrigin: { type:String, required: true },
   nameCn: { type:String, required: true },
   areaId: { type:String, required: true },
-  languageId: { type:ObjectId, required: true },
+  linesLangId: { type: String, required: true },
   linesText: { type:String, required: true },
-  transLangId: { type:ObjectId, required: true },
+  transLangId: { type:String, required: true },
   transText: { type:String, required: true },
-  images: [ObjectId],
+  imageList: [ObjectId],
   ...COMMON_FIELDS
 });
 

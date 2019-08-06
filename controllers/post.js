@@ -4,6 +4,7 @@ import uuid from 'uuid';
 import formidable from 'formidable';
 
 import FilesModel from '../model/schema/files';
+import LinesModel from '../model/schema/lines';
 import { UPLOAD_AREA_LIST, UPLOAD_LANGUAGE_LIST, PREFIX_URL } from '../config/constant';
 import { navList, logoInfo } from './common';
 import uploadToQiniu from '../helpers/qiniu';
@@ -46,12 +47,16 @@ export const postLines = (req, res, next) => {
     allFile.push({ field, file });
   });
 
-  form.parse(req, (err) => {
+  form.parse(req, async (err, fields) => {
     if (err) {
       console.log(err);
     }
 
-    allFile.forEach(async ({ field, file }) => {
+    let fileIdList = [];
+
+    await allFile.forEach(async ({ field, file }, index) => {
+      console.log('index: ', index);
+      console.log('allFile: ', allFile.length);
       let fileId = uuid();
 
       let extName = path.extname(file.name);
@@ -78,8 +83,21 @@ export const postLines = (req, res, next) => {
         url: `${PREFIX_URL}/${body.key}`
       };
 
-      await FilesModel.create(newFile);
+      let f = await FilesModel.create(newFile);
+
+      fileIdList.push(f._id);
+
+      if (index === allFile.length - 1) {
+        console.log('if index: ', index);
+        fields.imageList = fileIdList;
+        console.log(fields);
+        fields.uploader = req.session.user.id;
+        await LinesModel.create(fields);
+      }
     });
+
+
+
   });
 
   form.on('error', err => {

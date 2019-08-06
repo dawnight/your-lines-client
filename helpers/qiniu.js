@@ -1,9 +1,6 @@
 import qiniu from 'qiniu';
 import { qiniuConfig } from '../config/constant';
 
-// const qiniu = require('qiniu');
-// const { qiniuConfig } = require('../localConfig');
-
 const mac = new qiniu.auth.digest.Mac(qiniuConfig.AK, qiniuConfig.SK);
 
 const putPolicy = new qiniu.rs.PutPolicy({
@@ -27,7 +24,6 @@ const uploadToQiniu = (fileName, filePath) => {
         reject(err);
       }
       if (info.statusCode === 200) {
-        console.log(body);
         resolve(body);
       } else {
         console.log(info);
