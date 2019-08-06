@@ -1,4 +1,6 @@
 import path from 'path';
+import fs from 'fs';
+import uuid from 'uuid';
 import formidable from 'formidable';
 import { navList, logoInfo } from './common';
 import { UPLOAD_AREA_LIST, UPLOAD_LANGUAGE_LIST } from '../config/constant';
@@ -38,8 +40,9 @@ export const postLines = (req, res, next) => {
     console.log('[progress]: ', JSON.stringify(progressInfo));
   });
 
-  form.on('file', (filed, file) => {
-    allFile.push({ filed, file });
+  form.on('file', (field, file) => {
+    allFile.push({ field, file });
+    // allFile.push([filed, file]);
   });
 
   form.parse(req, (err) => {
@@ -47,19 +50,20 @@ export const postLines = (req, res, next) => {
       console.log(err);
     }
 
-    allFile.forEach(async ({ filed, file }) => {
-      let newFiles = {
+    allFile.forEach(async ({ field, file }) => {
+      let newFile = {
         uploader: req.session.user.id,
         originPath: file.path,
         originName: file.name,
-        originFiled: filed,
+        originFiled: field,
         lastModifiedDate: file.lastModifiedDate,
         size: file.size,
-        url: '待定的 URL',
-        type: file.type
+        type: file.type,
+        uuid: uuid()
       };
-      console.log(newFiles);
-      await FilesModel.create(newFiles);
+      await FilesModel.create(newFile);
+      let extName = path.extname(file.name);
+      fs.renameSync(file.path, `${form.uploadDir}/${newFile.uuid}${extName}`);
     });
   });
 

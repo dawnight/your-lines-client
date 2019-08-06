@@ -11,8 +11,9 @@ const FilesSchema = new Schema({
   originFiled: { type: String, required: true },
   lastModifiedDate: { type: Date, required: true },
   size: { type: Number, required: true },
-  url: { type: String, required: true },
+  url: { type: String, default: '' },
   type: { type: String, required: true },
+  uuid: { type: String, required: true },
   ...COMMON_FIELDS
 });
 
