@@ -55,3 +55,12 @@ export const SEARCH_HELPER_LIST = [
   { id: 'new', name: '最新上传' },
   { id: 'like', name: '点赞最多' }
 ];
+
+export const PREFIX_URL = 'http://upload.ikite.top';
+
+export const qiniuConfig = {
+  AK: '**',
+  SK: '**',
+  bucket: 'upload',
+  preUrl: 'http://upload.ikite.top/'
+};

@@ -27,7 +27,9 @@
     "log4js": "^4.5.1",
     "moment": "^2.24.0",
     "mongoose": "^5.6.8",
+    "node-qiniu": "^6.2.0",
     "nunjucks": "^3.2.0",
+    "qiniu": "^7.2.2",
     "redis": "^2.8.0",
     "uuid": "^3.3.2",
     "validator": "^11.1.0"

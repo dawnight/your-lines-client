@@ -14,6 +14,8 @@ const FilesSchema = new Schema({
   url: { type: String, default: '' },
   type: { type: String, required: true },
   uuid: { type: String, required: true },
+  hash: { type: String, required: true },
+  key: { type: String, required: true },
   ...COMMON_FIELDS
 });
 

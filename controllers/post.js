@@ -2,9 +2,11 @@ import path from 'path';
 import fs from 'fs';
 import uuid from 'uuid';
 import formidable from 'formidable';
-import { navList, logoInfo } from './common';
-import { UPLOAD_AREA_LIST, UPLOAD_LANGUAGE_LIST } from '../config/constant';
+
 import FilesModel from '../model/schema/files';
+import { UPLOAD_AREA_LIST, UPLOAD_LANGUAGE_LIST, PREFIX_URL } from '../config/constant';
+import { navList, logoInfo } from './common';
+import uploadToQiniu from '../helpers/qiniu';
 
 const uploadAreaList = UPLOAD_AREA_LIST;
 const uploadLanguageList = UPLOAD_LANGUAGE_LIST;
@@ -42,7 +44,6 @@ export const postLines = (req, res, next) => {
 
   form.on('file', (field, file) => {
     allFile.push({ field, file });
-    // allFile.push([filed, file]);
   });
 
   form.parse(req, (err) => {
@@ -51,6 +52,18 @@ export const postLines = (req, res, next) => {
     }
 
     allFile.forEach(async ({ field, file }) => {
+      let fileId = uuid();
+
+      let extName = path.extname(file.name);
+
+      let fileName = fileId + extName;
+
+      let filePath = `${form.uploadDir}/${fileName}`;
+
+      fs.renameSync(file.path, filePath);
+
+      let body = await uploadToQiniu(fileName, filePath);
+
       let newFile = {
         uploader: req.session.user.id,
         originPath: file.path,
@@ -59,11 +72,13 @@ export const postLines = (req, res, next) => {
         lastModifiedDate: file.lastModifiedDate,
         size: file.size,
         type: file.type,
-        uuid: uuid()
+        uuid: uuid(),
+        hash: body.hash,
+        key: body.key,
+        url: `${PREFIX_URL}/${body.key}`
       };
+
       await FilesModel.create(newFile);
-      let extName = path.extname(file.name);
-      fs.renameSync(file.path, `${form.uploadDir}/${newFile.uuid}${extName}`);
     });
   });
 
