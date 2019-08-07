@@ -60,7 +60,12 @@ export const postLines = (req, res, next) => {
 
     let fileURLList = [];
 
-    await allFile.forEach(async ({ field, file }, index) => {
+    let body = {};
+
+    let len = allFile.length;
+
+    for (let i = 0; i < len; i++) {
+      let { field, file } = allFile[i];
 
       let fileId = uuid();
 
@@ -72,47 +77,44 @@ export const postLines = (req, res, next) => {
 
       fs.renameSync(file.path, filePath);
 
-      let body = {};
-
       try {
-        await uploadToQiniu(fileName, filePath);
+        body = await uploadToQiniu(fileName, filePath);
       } catch (e) {
         // TODO 记录上传失败时错误，并把错误记录，作为信息记录发送给用户
         console.log(e);
       } finally {
 
-        let newFile = {
-          uploader: req.session.user.id,
-          originPath: file.path,
-          originName: file.name,
-          originFiled: field,
-          size: file.size,
-          type: file.type,
-          uuid: uuid(),
-          hash: body.hash || '',
-          key: body.key || '',
-          url: body.hash ? `${PREFIX_URL}/${body.key}`: ''
-        };
+        if (body) {
+          let newFile = {
+            uploader: req.session.user.id,
+            originPath: file.path,
+            originName: file.name,
+            originFiled: field,
+            size: file.size,
+            type: file.type,
+            uuid: uuid(),
+            hash: body.hash || '',
+            key: body.key || '',
+            url: body.hash ? `${PREFIX_URL}/${body.key}` : ''
+          };
 
-        console.log('newFile');
-        console.log(newFile);
+          await FilesModel.create(newFile);
 
-        await FilesModel.create(newFile);
+          if (newFile.url) {
+            fileURLList.push(newFile.url);
+          }
 
-        if (newFile.url) {
-          fileURLList.push(newFile.url);
-        }
+          if (i === allFile.length - 1) {
 
-        if (index === allFile.length - 1) {
+            fields.URLList = fileURLList;
 
-          fields.URLList = fileURLList;
+            fields.uploader = req.session.user.id;
 
-          fields.uploader = req.session.user.id;
-
-          await LinesModel.create(fields);
+            await LinesModel.create(fields);
+          }
         }
       }
-    });
+    }
 
   });
 

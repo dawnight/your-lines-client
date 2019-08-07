@@ -2,27 +2,46 @@ import { navList, logoInfo } from './common';
 import UserModel from '../model/schema/user';
 
 export const renderLogin = (req, res) => {
-  res.render('pages/login', {
-    navList,
-    logoInfo,
-    page: 'user',
-    user: req.session.user,
-    error: req.flash('error'),
-    email: req.flash('email')
-  });
+  let user = req.session.user;
+  if (!user) {
+    res.render('pages/login', {
+      navList,
+      logoInfo,
+      page: 'user',
+      user: null,
+      error: req.flash('error'),
+      email: req.flash('email')
+    });
+  } else {
+    let referer = req.headers.referer;
+    if (referer) {
+      res.redirect(referer);
+    } else {
+      res.redirect('/');
+    }
+  }
 };
 
 export const renderSignUp = (req, res) => {
+  let user = req.session.user;
 
-  res.render('pages/signUp', {
-    navList,
-    logoInfo,
-    page: 'user',
-    user: req.session.user,
-    error: req.flash('error'),
-    email: req.flash('email')
-  });
-
+  if (!user) {
+    res.render('pages/signUp', {
+      navList,
+      logoInfo,
+      page: 'user',
+      user: user,
+      error: req.flash('error'),
+      email: req.flash('email')
+    });
+  } else {
+    let referer = req.headers.referer;
+    if (referer) {
+      res.redirect(referer);
+    } else {
+      res.redirect('/');
+    }
+  }
 };
 
 export const renderLogout = (req, res) => {
