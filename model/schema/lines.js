@@ -13,7 +13,7 @@ const LinesSchema = new Schema({
   linesText: { type:String, required: true },
   transLangId: { type:String, required: true },
   transText: { type:String, required: true },
-  imageList: [ObjectId],
+  URLList: [{ type: String, default: '' }],
   ...COMMON_FIELDS
 });
 

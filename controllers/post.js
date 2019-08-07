@@ -25,9 +25,15 @@ export const renderPost = (req, res) => {
 
 export const postLines = (req, res, next) => {
 
+  let distPath = path.join(__dirname, '../uploads/');
+
+  if (!fs.existsSync(distPath)) {
+    fs.mkdirSync(distPath);
+  }
+
   const form = new formidable.IncomingForm({
     encoding: 'utf-8',
-    uploadDir: path.join(__dirname, '../uploads/'),
+    uploadDir: distPath,
     keepExtensions: true,
     maxFieldsSize: 2 * 1024 * 1024,
     multiples: true
@@ -52,11 +58,10 @@ export const postLines = (req, res, next) => {
       console.log(err);
     }
 
-    let fileIdList = [];
+    let fileURLList = [];
 
     await allFile.forEach(async ({ field, file }, index) => {
-      console.log('index: ', index);
-      console.log('allFile: ', allFile.length);
+
       let fileId = uuid();
 
       let extName = path.extname(file.name);
@@ -67,36 +72,47 @@ export const postLines = (req, res, next) => {
 
       fs.renameSync(file.path, filePath);
 
-      let body = await uploadToQiniu(fileName, filePath);
+      let body = {};
 
-      let newFile = {
-        uploader: req.session.user.id,
-        originPath: file.path,
-        originName: file.name,
-        originFiled: field,
-        lastModifiedDate: file.lastModifiedDate,
-        size: file.size,
-        type: file.type,
-        uuid: uuid(),
-        hash: body.hash,
-        key: body.key,
-        url: `${PREFIX_URL}/${body.key}`
-      };
+      try {
+        await uploadToQiniu(fileName, filePath);
+      } catch (e) {
+        // TODO 记录上传失败时错误，并把错误记录，作为信息记录发送给用户
+        console.log(e);
+      } finally {
 
-      let f = await FilesModel.create(newFile);
+        let newFile = {
+          uploader: req.session.user.id,
+          originPath: file.path,
+          originName: file.name,
+          originFiled: field,
+          size: file.size,
+          type: file.type,
+          uuid: uuid(),
+          hash: body.hash || '',
+          key: body.key || '',
+          url: body.hash ? `${PREFIX_URL}/${body.key}`: ''
+        };
 
-      fileIdList.push(f._id);
+        console.log('newFile');
+        console.log(newFile);
 
-      if (index === allFile.length - 1) {
-        console.log('if index: ', index);
-        fields.imageList = fileIdList;
-        console.log(fields);
-        fields.uploader = req.session.user.id;
-        await LinesModel.create(fields);
+        await FilesModel.create(newFile);
+
+        if (newFile.url) {
+          fileURLList.push(newFile.url);
+        }
+
+        if (index === allFile.length - 1) {
+
+          fields.URLList = fileURLList;
+
+          fields.uploader = req.session.user.id;
+
+          await LinesModel.create(fields);
+        }
       }
     });
-
-
 
   });
 
@@ -106,6 +122,8 @@ export const postLines = (req, res, next) => {
     next(err);
   });
 
+  // TODO 这里返回的信息，不是真实的成功，而是表单提交成功
+  // TODO 上传文件时可能会失败，所以应该要有校验，然后再返回
   form.on('end', function () {
     res.render('pages/postFeedback', {
       message: '投稿成功',

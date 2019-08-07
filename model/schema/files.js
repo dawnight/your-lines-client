@@ -9,13 +9,12 @@ const FilesSchema = new Schema({
   originPath: { type: String, required: true },
   originName: { type: String, required: true },
   originFiled: { type: String, required: true },
-  lastModifiedDate: { type: Date, required: true },
   size: { type: Number, required: true },
   url: { type: String, default: '' },
-  type: { type: String, required: true },
+  type: { type: String, default: '' },
   uuid: { type: String, required: true },
-  hash: { type: String, required: true },
-  key: { type: String, required: true },
+  hash: { type: String, default: '' },
+  key: { type: String, default: '' },
   ...COMMON_FIELDS
 });
 

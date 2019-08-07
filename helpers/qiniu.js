@@ -23,11 +23,11 @@ const uploadToQiniu = (fileName, filePath) => {
         console.log(err);
         reject(err);
       }
-      if (info.statusCode === 200) {
+
+      if (info && info.statusCode === 200) {
         resolve(body);
       } else {
-        console.log(info);
-        console.log(body);
+        reject(err);
       }
     });
 
