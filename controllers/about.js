@@ -1,10 +1,12 @@
 import { navList, logoInfo } from './common';
 
+const page = 'about';
+
 export const renderAbout = (req, res) => {
-  res.render('pages/about', {
+  res.render('about/index', {
+    user: req.session.user,
+    page,
     navList,
-    logoInfo,
-    page: 'about',
-    user: req.session.user
+    logoInfo
   });
 };

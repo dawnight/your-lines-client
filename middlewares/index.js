@@ -2,7 +2,7 @@ import session from 'express-session';
 import bodyParser from 'body-parser';
 import morgan from 'morgan';
 import log4js from 'log4js';
-import logger from '../helpers/logger';
+import logger from './logger';
 import redisStore from 'connect-redis';
 import flash from 'connect-flash';
 

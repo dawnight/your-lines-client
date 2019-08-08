@@ -1,10 +1,12 @@
 import { navList, logoInfo } from './common';
 
+const page = 'message';
+
 export const renderMessage = (req, res) => {
-  res.render('pages/message', {
+  res.render('message/index', {
+    user: req.session.user,
+    page,
     navList,
-    logoInfo,
-    page: 'message',
-    user: req.session.user
+    logoInfo
   });
 };

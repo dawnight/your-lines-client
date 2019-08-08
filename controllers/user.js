@@ -1,16 +1,27 @@
 import { navList, logoInfo } from './common';
 import UserModel from '../model/schema/user';
 
+const page = 'user';
+
+export const renderUser = (req, res) => {
+  res.render('user/index', {
+    user: req.session.user,
+    page,
+    navList,
+    logoInfo
+  });
+};
+
 export const renderLogin = (req, res) => {
   let user = req.session.user;
   if (!user) {
-    res.render('pages/login', {
-      navList,
-      logoInfo,
-      page: 'user',
+    res.render('user/login', {
+      page,
       user: null,
       error: req.flash('error'),
-      email: req.flash('email')
+      email: req.flash('email'),
+      navList,
+      logoInfo
     });
   } else {
     let referer = req.headers.referer;
@@ -26,13 +37,13 @@ export const renderSignUp = (req, res) => {
   let user = req.session.user;
 
   if (!user) {
-    res.render('pages/signUp', {
-      navList,
-      logoInfo,
-      page: 'user',
+    res.render('user/signUp', {
+      page,
       user: user,
       error: req.flash('error'),
-      email: req.flash('email')
+      email: req.flash('email'),
+      navList,
+      logoInfo
     });
   } else {
     let referer = req.headers.referer;
@@ -138,11 +149,3 @@ export const login = async (req, res) => {
 
 };
 
-export const renderUser = (req, res) => {
-  res.render('pages/user', {
-    navList,
-    logoInfo,
-    page: 'user',
-    user: req.session.user
-  });
-};

@@ -1,7 +1,7 @@
 import path from 'path';
 import log4js from 'log4js';
 
-import { formatDate } from './utils';
+import { formatDate } from '../helpers/utils';
 
 log4js.configure({
   appenders: {

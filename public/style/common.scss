@@ -9,80 +9,13 @@ body {
 .container {
   width: 1200px;
   margin: 0 auto;
-}
 
-
-nav.header {
-  display: flex;
-  align-items: center;
-  height: 80px;
-  padding: 0 20px;
-  background: #fff;
-  box-shadow: 0 3px 3px $shadow-color;
-  vertical-align: middle;
-
-  .logo-wrapper {
-    .logo {
-      width: 140px;
-      height: 50px;
-    }
+  .navbar {
+    height: 60px;
   }
 
-  li {
-    padding: 4px;
-    margin-left: 1rem;
-    font-size: 1.2rem;
-
-    a {
-      color: $assist-color;
-      text-decoration: none;
-
-      &.active {
-        color: $content-color;
-      }
-    }
+  .content {
+    margin-top: 60px;
   }
-}
 
-
-
-.y {
-  outline: none;
-  border: 1px solid $disable-color;
-  font-size: 1rem;
-}
-
-.y-input {
-  @extend .y;
-  height: 1.5rem;
-  padding: 0.2rem 0.6rem;
-
-  &:hover,
-  &:focus {
-    border: 1px solid $hover-color;
-  }
-}
-
-.y-select {
-  @extend .y;
-  height: 2rem;
-  padding: 0.2rem 0.6rem;
-}
-
-.y-textarea {
-  @extend .y;
-  height: 4rem;
-}
-
-.y-button {
-  text-align: center;
-  border: 1px solid transparent;
-  padding: 5px 15px 6px;
-  font-size: 1rem;
-  cursor: pointer;
-
-  &:hover {
-    background: $hover-color;
-    color: $bg-white;
-  }
 }

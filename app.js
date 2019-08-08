@@ -6,7 +6,7 @@ import nunjucks from 'nunjucks';
 import bluebird from 'bluebird';
 import router from './router';
 import { initSchema, connectDB } from './model/mongoDBInit';
-
+import { getIPAddress } from './helpers/utils';
 
 const app = express();
 const PORT = 4200;
@@ -42,6 +42,9 @@ app.listen(PORT, err => {
   if (err) {
     console.log(err);
   } else {
-    console.log(`server is running at http://localhost:${PORT}`);
+    let ipList = getIPAddress();
+    ipList.forEach(ip => {
+      console.log(`server is running at http://${ip}:${PORT}`);
+    });
   }
 });

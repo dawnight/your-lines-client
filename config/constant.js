@@ -7,7 +7,7 @@ export const NAV_LIST = [
   { id: 'home', href: '/', name: '首页' },
   { id: 'tv', href: '/tv', name: '影视中心' },
   { id: 'post', href: '/post', name: '投稿' },
-  { id: 'message', href: '/message', name: '留言' },
+  { id: 'index.njk', href: '/message', name: '留言' },
   { id: 'about', href: '/about', name: '关于' }
 ];
 

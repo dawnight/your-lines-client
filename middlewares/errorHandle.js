@@ -1,5 +1,5 @@
 export const handle404 = (req, res) => {
-  res.render('pages/exception', {
+  res.render('exception/index', {
     title: '404',
     errorTitle: '抱歉！你访问的页面失联了',
     errorMsg: [
@@ -9,12 +9,10 @@ export const handle404 = (req, res) => {
 };
 
 export const handle500 = (err, req, res) => {
-  res.render(
-    'pages/exception',
-    {
+  res.render('exception/index', {
       title: '500',
       errorTitle: '抱歉！当前页面暂时无法访问',
-      errorMsg: [err.message]
+      errorMsg: [err.index]
     }
   );
 };

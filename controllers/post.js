@@ -12,14 +12,16 @@ import uploadToQiniu from '../helpers/qiniu';
 const uploadAreaList = UPLOAD_AREA_LIST;
 const uploadLanguageList = UPLOAD_LANGUAGE_LIST;
 
+const page = 'post';
+
 export const renderPost = (req, res) => {
-  res.render('pages/post', {
+  res.render('post/index', {
+    user: req.session.user,
+    page,
     uploadAreaList,
     uploadLanguageList,
     navList,
-    logoInfo,
-    page: 'post',
-    user: req.session.user
+    logoInfo
   });
 };
 
@@ -127,11 +129,11 @@ export const postLines = (req, res, next) => {
   // TODO 这里返回的信息，不是真实的成功，而是表单提交成功
   // TODO 上传文件时可能会失败，所以应该要有校验，然后再返回
   form.on('end', function () {
-    res.render('pages/postFeedback', {
+    res.render('post/feedback', {
+      user: req.session.user,
+      page,
       message: '投稿成功',
-      page: 'post',
-      navList,
-      user: req.session.user
+      navList
     });
   });
 
