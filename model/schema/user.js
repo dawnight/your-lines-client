@@ -14,6 +14,11 @@ const UserSchema = new Schema({
   avatarUrl: { type: String, required: false },
   phone: { type: String, required: false },
   isActivated: { type: Boolean, default: false, select: false },
+  // user 的角色有两种，一种是用户，一种是管理
+  // auth 为 1， 表示是普通客户端的用户，所有客户端的权限都一样
+  // auth 为 2， 表示是管理端操作人员
+  // auth 为 3， 表示是管理端的管理员
+  auth: { type: Number, default: 1 },
   ...COMMON_FIELDS
 });
 
