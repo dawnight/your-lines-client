@@ -5,7 +5,6 @@ import * as Post from './controllers/post';
 import * as TV from './controllers/tv';
 import * as User from './controllers/user';
 import auth from './middlewares/auth';
-import * as PostValidator from './validation/post';
 import * as UserValidator from './validation/user';
 
 const wrap = fn => (...args) => Promise.resolve(fn(...args)).catch(args[2]);
@@ -22,7 +21,8 @@ export default app => {
 
   /*** POST PAGE ROUTER ***/
   app.get('/post', auth, wrap(Post.renderPost));
-  app.post('/post/lines', auth, PostValidator.postLines, Post.postLines);
+  // 这个参数校验，还有问题，目前是前端校验
+  app.post('/post/lines', auth, Post.postLines);
 
   /*** TV PAGE ROUTER ***/
   app.get('/tv', wrap(TV.renderTv));

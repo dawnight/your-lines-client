@@ -30,15 +30,6 @@ export const renderPost = (req, res) => {
 
 export const postLines = (req, res, next) => {
 
-  let vRes = validationResult(req);
-  console.log(vRes.errors);
-  if (!vRes.isEmpty()) {
-
-    req.flash('errors', vRes.errors);
-
-    return res.status(422).redirect('/post');
-  }
-
   let distPath = path.join(__dirname, '../uploads/');
 
   if (!fs.existsSync(distPath)) {

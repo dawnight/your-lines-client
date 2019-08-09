@@ -68,6 +68,19 @@ export const SEARCH_HELPER_MAP = [
 
 export const SEARCH_HELPER_LIST = SEARCH_HELPER_MAP.map(item => item.id);
 
+export const FILE_TYPE_MAP = [
+  { id: 'image', name: '图片' },
+  { id: 'audio', name: '音乐' },
+  { id: 'video', name: '视频' },
+  { id: 'word', name: 'word' },
+  { id: 'excel', name: 'excel' },
+  { id: 'ppt', name: 'ppt' },
+  { id: 'pdf', name: 'pdf' },
+  { id: 'txt', name: 'txt' },
+];
+
+export const FILE_TYPE_LIST =  FILE_TYPE_MAP.map(item => item.id);
+
 export const PREFIX_URL = 'http://upload.ikite.top';
 
 export const qiniuConfig = {
