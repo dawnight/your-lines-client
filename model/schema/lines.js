@@ -6,7 +6,7 @@ const ObjectId = Schema.Types.ObjectId;
 
 const LinesSchema = new Schema({
   uploader: { type: ObjectId, ref: 'user', required: true },
-  nameOrigin: { type:String, required: true },
+  originName: { type:String, required: true },
   nameCn: { type:String, required: true },
   areaId: { type:String, required: true },
   linesLangId: { type: String, required: true },

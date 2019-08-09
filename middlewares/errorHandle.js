@@ -10,9 +10,8 @@ export const handle404 = (req, res) => {
 
 export const handle500 = (err, req, res) => {
   res.render('exception/index', {
-      title: '500',
-      errorTitle: '抱歉！当前页面暂时无法访问',
-      errorMsg: [err.index]
-    }
-  );
+    title: '500',
+    errorTitle: '抱歉！当前页面暂时无法访问',
+    errorMsg: [err.index]
+  });
 };

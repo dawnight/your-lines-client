@@ -12,8 +12,8 @@
     <form class="needs-validation" novalidate action="/post/lines" enctype="multipart/form-data" method="post">
 
       <div class="row mb-3">
-        <label for="nameOrigin" class="mb-2">原剧剧名</label>
-        <input type="text" class="form-control" name="nameOrigin" required>
+        <label for="originName" class="mb-2">原剧剧名</label>
+        <input type="text" class="form-control" name="originName" required>
         <div class="invalid-feedback" style="width: 100%;">请输入原剧剧名</div>
       </div>
 
@@ -26,9 +26,12 @@
       <div class="row mb-3">
         <label for="areaId" class="mb-2">所在地区</label>
         <select class="custom-select d-block w-100" name="areaId" required>
-          <option selected="selected" value="mainland">中国大陆</option>
-          {% for option in uploadAreaList %}
-            <option value="{{ option.id }}">{{ option.name }}</option>
+          {% for option in uploadAreaMap %}
+            {% if loop.first %}
+              <option selected value="{{ option.id }}">{{ option.name }}</option>
+            {% else %}
+              <option value="{{ option.id }}">{{ option.name }}</option>
+            {% endif %}
           {% endfor %}
         </select>
         <div class="invalid-feedback" style="width: 100%;">请选择所在地区</div>
@@ -37,9 +40,12 @@
       <div class="row mb-3">
         <label for="linesLangId" class="mb-2">剧中台词语言</label>
         <select class="custom-select d-block w-100" name="linesLangId" required>
-          <option selected="selected" value="cn">汉语</option>
-          {% for option in uploadLanguageList %}
-            <option value="{{ option.id }}" class="y-select">{{ option.name }}</option>
+          {% for option in uploadLanguageMap %}
+            {% if loop.first %}
+              <option selected="{{ option.id }}" value="{{ option.id }}">{{ option.name }}</option>
+            {% else %}
+              <option value="{{ option.id }}">{{ option.name }}</option>
+            {% endif %}
           {% endfor %}
         </select>
         <div class="invalid-feedback" style="width: 100%;">请选择剧中台词语言</div>
@@ -54,9 +60,12 @@
       <div class="row mb-3">
         <label for="transLangId" class="mb-2">台词翻译语言</label>
         <select class="custom-select d-block w-100" name="transLangId" required>
-          <option selected="selected" value="cn">汉语</option>
-          {% for option in uploadLanguageList %}
-            <option value="{{ option.id }}" class="y-select">{{ option.name }}</option>
+          {% for option in uploadLanguageMap %}
+            {% if loop.first %}
+              <option selected="{{ option.id }}" value="{{ option.id }}">{{ option.name }}</option>
+            {% else %}
+              <option value="{{ option.id }}">{{ option.name }}</option>
+            {% endif %}
           {% endfor %}
         </select>
         <div class="invalid-feedback" style="width: 100%;">请选择台词翻译语言</div>
@@ -82,6 +91,11 @@
       </div>
 
       <hr class="mb-4">
+      {% if errors %}
+        {% for error in errors %}
+          <p class="alert alert-danger">{{ error.msg }}</p>
+        {% endfor %}
+      {% endif %}
       <button class="btn btn-primary btn-lg btn-block" type="submit" id="postBtn">投稿</button>
     </form>
   </div>
@@ -89,148 +103,121 @@
 
 {% block js %}
 
-<script>
-  (function () {
+  <script>
+    (function () {
 
-    window.addEventListener('load', function () {
+      window.addEventListener('load', function () {
+        return false;
+        var forms = document.getElementsByClassName('needs-validation');
 
-      var forms = document.getElementsByClassName('needs-validation');
+        Array.prototype.filter.call(forms, function (form) {
 
-      Array.prototype.filter.call(forms, function (form) {
+          form.addEventListener('submit', function (event) {
 
-        form.addEventListener('submit', function (event) {
+            if (form.checkValidity() === false) {
 
-          if (form.checkValidity() === false) {
+              event.preventDefault();
 
-            event.preventDefault();
+              event.stopPropagation();
 
-            event.stopPropagation();
+            }
 
-          }
+            form.classList.add('was-validated');
 
-          form.classList.add('was-validated');
+          }, false);
 
-        }, false);
+        });
 
-      });
-
-    }, false);
-
-    let images = document.getElementById('images');
-    let postBtn = document.getElementById('postBtn');
-
-    let imageWrapper = document.getElementById('imageWrapper');
-
-    function previewPicture (imageLength) {
-
-      let imageList = [
-        'A0001',
-        'B0001',
-        'C0001',
-        'D0001',
-        'E0001',
-        'F0001',
-        'G0001',
-        'H0001',
-        'I0001',
-      ];
+      }, false);
 
       let images = document.getElementById('images');
 
-      let files = images.files;
+      let imageWrapper = document.getElementById('imageWrapper');
 
-      let fileLength = files.length + imageLength;
+      function previewPicture(imageLength) {
 
-      if (fileLength > 9) {
-        window.$message('上传图片数量不能超过 9 张');
-        return false;
+        let imageList = [
+          'A0001',
+          'B0001',
+          'C0001',
+          'D0001',
+          'E0001',
+          'F0001',
+          'G0001',
+          'H0001',
+          'I0001',
+        ];
+
+        let images = document.getElementById('images');
+
+        let files = images.files;
+
+        let fileLength = files.length + imageLength;
+
+        if (fileLength > 9) {
+          window.$message('上传图片数量不能超过 9 张');
+          return false;
+        }
+
+        for (let i = 0; i < fileLength; i++) {
+
+          let file = files[i];
+
+          let sectionHTML = document.createElement('section');
+
+          sectionHTML.setAttribute('id', imageList[i]);
+
+          let img = new Image();
+
+          img.src = URL.createObjectURL(file);
+
+          sectionHTML.appendChild(img);
+
+          let iconsHTML = document.createElement('span');
+
+          iconsHTML.setAttribute('class', 'icons');
+
+          let delHTML = document.createElement('span');
+
+          delHTML.setAttribute('class', 'del');
+
+          delHTML.setAttribute('data-id', imageList[i]);
+
+          delHTML.innerText = 'X';
+
+          iconsHTML.appendChild(delHTML);
+
+          sectionHTML.appendChild(iconsHTML);
+
+          imageWrapper.appendChild(sectionHTML);
+        }
       }
 
-      for (let i = 0; i < fileLength; i++) {
-
-        let file = files[i];
-
-        let sectionHTML = document.createElement('section');
-
-        sectionHTML.setAttribute('id', imageList[i]);
-
-        let img = new Image();
-
-        img.src = URL.createObjectURL(file);
-
-        sectionHTML.appendChild(img);
-
-        let iconsHTML = document.createElement('span');
-
-        iconsHTML.setAttribute('class', 'icons');
-
-        let delHTML = document.createElement('span');
-
-        delHTML.setAttribute('class', 'del');
-
-        delHTML.setAttribute('data-id', imageList[i]);
-
-        delHTML.innerText = 'X';
-
-        iconsHTML.appendChild(delHTML);
-
-        sectionHTML.appendChild(iconsHTML);
-
-        imageWrapper.appendChild(sectionHTML);
+      function queryChildrenLength(el) {
+        el = el || document.getElementById('imageWrapper');
+        return el.children.length;
       }
-    }
 
-    function queryChildrenLength(el) {
-      el = el || document.getElementById('imageWrapper');
-      return el.children.length;
-    }
+      images.addEventListener('change', () => {
+        let imageLength = queryChildrenLength();
+        previewPicture(imageLength);
+      });
 
-    images.addEventListener('change', () => {
-      let imageLength = queryChildrenLength();
-      previewPicture(imageLength);
-    });
+      imageWrapper.addEventListener('click', e => {
 
-    imageWrapper.addEventListener('click', e => {
+        const { target } = e;
 
-      const { target } = e;
+        if (target.classList.contains('del')) {
 
-      if (target.classList.contains('del')) {
+          let id = target.dataset.id;
 
-        let id = target.dataset.id;
+          let parent = document.getElementById(id);
 
-        let parent = document.getElementById(id);
+          imageWrapper.removeChild(parent);
 
-        imageWrapper.removeChild(parent);
+        }
+      });
 
-      }
-    });
-
-    // postBtn.addEventListener('click', e => {
-    //   e.preventDefault();
-    //
-    //   let form = new FormData();
-    //
-    //   let paramsList = [
-    //     'nameOrigin',
-    //     'nameCn',
-    //     'areaId',
-    //     'linesLangId',
-    //     'linesText',
-    //     'transLangId',
-    //     'transText'
-    //   ];
-    //
-    //   paramsList.forEach(item => {
-    //     let value = document.getElementById(item).value;
-    //     form.append(item, value);
-    //   });
-    //
-    //   console.log(form);
-    //
-    //
-    // });
-
-
-  })();
-</script>
+    })();
+  </script>
 {% endblock %}

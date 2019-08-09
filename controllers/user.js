@@ -1,5 +1,6 @@
-import { navList, logoInfo } from './common';
+import { navMap, logoInfo } from './common';
 import UserModel from '../model/schema/user';
+import { validationResult } from 'express-validator';
 
 const page = 'user';
 
@@ -7,7 +8,7 @@ export const renderUser = (req, res) => {
   res.render('user/index', {
     user: req.session.user,
     page,
-    navList,
+    navMap,
     logoInfo
   });
 };
@@ -18,9 +19,9 @@ export const renderLogin = (req, res) => {
     res.render('user/login', {
       page,
       user: null,
-      error: req.flash('error'),
+      errors: req.flash('errors'),
       email: req.flash('email'),
-      navList,
+      navMap,
       logoInfo
     });
   } else {
@@ -38,11 +39,11 @@ export const renderSignUp = (req, res) => {
 
   if (!user) {
     res.render('user/signUp', {
-      page,
       user: user,
-      error: req.flash('error'),
+      page,
+      errors: req.flash('errors'),
       email: req.flash('email'),
-      navList,
+      navMap,
       logoInfo
     });
   } else {
@@ -62,11 +63,22 @@ export const renderLogout = (req, res) => {
 
 export const signUp = async (req, res) => {
 
+  let vRes = validationResult(req);
+
+  if (!vRes.isEmpty()) {
+
+    req.flash('errors', vRes.errors);
+
+    return res.status(422).redirect('/user/signUp');
+  }
+
   const { email, password, rePassword } = req.body;
 
   if (password !== rePassword) {
 
-    req.flash('error', '两次输入的密码不一致');
+    req.flash('errors', [{
+      msg: '两次输入的密码不一致'
+    }]);
 
     req.flash('email', email);
 
@@ -79,7 +91,9 @@ export const signUp = async (req, res) => {
 
     if (user) {
 
-      req.flash('error', '邮箱已被占用');
+      req.flash('errors', [{
+        msg: '邮箱已被占用'
+      }]);
 
       req.flash('email', email);
 
@@ -94,13 +108,27 @@ export const signUp = async (req, res) => {
 
   } catch (err) {
 
-    req.flash('error', '服务出错');
+    req.flash('errors', [{
+      msg: '服务出错'
+    }]);
 
     return res.redirect('/user/signUp');
   }
 };
 
 export const login = async (req, res) => {
+
+  let vRes = validationResult(req);
+
+  console.log(vRes.errors);
+
+  if (!vRes.isEmpty()) {
+
+    req.flash('errors', vRes.errors);
+
+    return res.status(422).redirect('/user/login');
+  }
+
 
   const { email, password } = req.body;
 
@@ -125,7 +153,9 @@ export const login = async (req, res) => {
 
         } else {
 
-          req.flash('error', '用户名或密码错误');
+          req.flash('errors', [{
+            msg: '用户名或密码错误'
+          }]);
 
           req.flash('email', email);
 
@@ -135,14 +165,18 @@ export const login = async (req, res) => {
       });
     } else {
 
-      req.flash('error', '用户不存在');
+      req.flash('errors', [{
+        msg: '用户不存在'
+      }]);
 
       return res.redirect('/user/login');
 
     }
   } catch (err) {
 
-    req.flash('error', '服务出错');
+    req.flash('errors', [{
+      msg: '服务出错'
+    }]);
 
     return res.redirect('/user/login');
   }

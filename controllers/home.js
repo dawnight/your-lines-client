@@ -1,9 +1,9 @@
-import { navList, logoInfo } from './common';
-import { SEARCH_FORMAL_LIST, SEARCH_AREA_LIST, SEARCH_HELPER_LIST } from '../config/constant';
+import { navMap, logoInfo } from './common';
+import { SEARCH_FORMAL_MAP, SEARCH_AREA_MAP, SEARCH_HELPER_MAP } from '../config/constant';
 
-const searchFormalList = SEARCH_FORMAL_LIST;
-const searchAreaList = SEARCH_AREA_LIST;
-const searchHelperList = SEARCH_HELPER_LIST;
+const searchFormalMap = SEARCH_FORMAL_MAP;
+const searchAreaMap = SEARCH_AREA_MAP;
+const searchHelperMap = SEARCH_HELPER_MAP;
 
 const page = 'home';
 
@@ -14,10 +14,10 @@ export const renderHome = (req, res) => {
   res.render('home/index', {
     user: req.session.user,
     page,
-    navList,
-    searchFormalList,
-    searchAreaList,
-    searchHelperList,
+    navMap,
+    searchFormalMap,
+    searchAreaMap,
+    searchHelperMap,
     logoInfo,
     formalId,
     areaId,

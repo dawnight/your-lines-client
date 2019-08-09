@@ -2,30 +2,42 @@ import path from 'path';
 import fs from 'fs';
 import uuid from 'uuid';
 import formidable from 'formidable';
+import { validationResult } from 'express-validator';
 
 import FilesModel from '../model/schema/files';
 import LinesModel from '../model/schema/lines';
-import { UPLOAD_AREA_LIST, UPLOAD_LANGUAGE_LIST, PREFIX_URL } from '../config/constant';
-import { navList, logoInfo } from './common';
+import { UPLOAD_AREA_MAP, UPLOAD_LANGUAGE_MAP, PREFIX_URL } from '../config/constant';
+import { navMap, logoInfo } from './common';
 import uploadToQiniu from '../helpers/qiniu';
 
-const uploadAreaList = UPLOAD_AREA_LIST;
-const uploadLanguageList = UPLOAD_LANGUAGE_LIST;
+const uploadAreaMap = UPLOAD_AREA_MAP;
+const uploadLanguageMap = UPLOAD_LANGUAGE_MAP;
 
 const page = 'post';
 
 export const renderPost = (req, res) => {
+
   res.render('post/index', {
     user: req.session.user,
     page,
-    uploadAreaList,
-    uploadLanguageList,
-    navList,
-    logoInfo
+    uploadAreaMap,
+    uploadLanguageMap,
+    navMap,
+    logoInfo,
+    errors: req.flash('errors'),
   });
 };
 
 export const postLines = (req, res, next) => {
+
+  let vRes = validationResult(req);
+  console.log(vRes.errors);
+  if (!vRes.isEmpty()) {
+
+    req.flash('errors', vRes.errors);
+
+    return res.status(422).redirect('/post');
+  }
 
   let distPath = path.join(__dirname, '../uploads/');
 
@@ -66,8 +78,16 @@ export const postLines = (req, res, next) => {
 
     let len = allFile.length;
 
+    if (len === 0) {
+      return;
+    }
+
     for (let i = 0; i < len; i++) {
       let { field, file } = allFile[i];
+
+      if (file.size === 0) {
+        return;
+      }
 
       let fileId = uuid();
 
@@ -133,7 +153,7 @@ export const postLines = (req, res, next) => {
       user: req.session.user,
       page,
       message: '投稿成功',
-      navList
+      navMap
     });
   });
 

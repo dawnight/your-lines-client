@@ -32,7 +32,6 @@ app.use(express.static(path.join(__dirname, 'dist')));
   await connectDB();
 })();
 
-
 router(app);
 
 app.use(ErrorHandle.handle404);

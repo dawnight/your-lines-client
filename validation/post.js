@@ -1,18 +1,12 @@
-import Joi from 'joi';
+import { body } from 'express-validator';
+import { UPLOAD_AREA_LIST, UPLOAD_LANGUAGE_LIST } from '../config/constant';
 
-export default {
-  postLines: {
-    options: {
-      allowUnknownBody: true,
-      body: {
-        nameOrigin: Joi.string().required().regex(/{1, 20}/),
-        nameCn: Joi.string().required().regex(/{1, 20}/),
-        areaId: Joi.string().required().regex(/{1, 20}/),
-        linesLangId: Joi.string().required().regex(/{1, 20}/),
-        linesText: Joi.string().required().regex(/{1, 1024}/),
-        transLangId: Joi.string().required().regex(/{1, 20}/),
-        transText: Joi.string().required().regex(/{1, 1024}/),
-      }
-    }
-  }
-};
+export const postLines = [
+  body('originName').isLength({ min: 1 }).withMessage('原剧剧名不能为空'),
+  body('nameCn').isLength({ min: 1 }).withMessage('中文剧名不能为空'),
+  body('areaId').not().isIn(UPLOAD_AREA_LIST).withMessage('所在地区不符合要求'),
+  body('linesLangId').not().isIn(UPLOAD_LANGUAGE_LIST).withMessage('剧中台词语言不符合要求'),
+  body('linesText').isLength({ min: 1 }).withMessage('剧中台词不能为空'),
+  body('transLangId').not().isIn(UPLOAD_LANGUAGE_LIST).withMessage('台词翻译语言不符合要求'),
+  body('transText').isLength({ min: 1 }).withMessage('台词翻译不能为空'),
+];

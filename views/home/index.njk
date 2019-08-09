@@ -7,7 +7,7 @@
 {% block content %}
 <div class="category">
   <ul class="line">
-    {% for item in searchFormalList %}
+    {% for item in searchFormalMap %}
       <li class="item">
         <a class=" {% if item.id === formalId %}active{% endif %}"
            href="?formalId={{ item.id }}&areaId={{ areaId }}&helperId={{ helperId }}">{{ item.name }}</a>
@@ -15,7 +15,7 @@
     {% endfor %}
   </ul>
   <ul class="line">
-    {% for item in searchAreaList %}
+    {% for item in searchAreaMap %}
       <li class="item">
         <a class=" {% if item.id === areaId %}active{% endif %}"
            href="?formalId={{ formalId }}&areaId={{ item.id }}&helperId={{ helperId }}">{{ item.name }}</a>
@@ -23,7 +23,7 @@
     {% endfor %}
   </ul>
   <ul class="line">
-    {% for item in searchHelperList %}
+    {% for item in searchHelperMap %}
       <li class="item">
         <a class=" {% if item.id === helperId %}active{% endif %}"
            href="?formalId={{ formalId }}&areaId={{ areaId }}&helperId={{ item.id }}">{{ item.name }}</a>
