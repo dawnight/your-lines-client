@@ -12,6 +12,20 @@
     <form class="needs-validation" novalidate action="/post/lines" enctype="multipart/form-data" method="post">
 
       <div class="row mb-3">
+        <label for="areaId" class="mb-2">影视类型</label>
+        <select class="custom-select d-block w-100" name="formalId" required>
+          {% for option in uploadFormalMap %}
+            {% if loop.first %}
+              <option selected value="{{ option.id }}">{{ option.name }}</option>
+            {% else %}
+              <option value="{{ option.id }}">{{ option.name }}</option>
+            {% endif %}
+          {% endfor %}
+        </select>
+        <div class="invalid-feedback" style="width: 100%;">请选择影视类型</div>
+      </div>
+
+      <div class="row mb-3">
         <label for="originName" class="mb-2">原剧剧名</label>
         <input type="text" class="form-control" name="originName" required>
         <div class="invalid-feedback" style="width: 100%;">请输入原剧剧名</div>
@@ -152,6 +166,8 @@
 
         let files = images.files;
 
+
+
         let fileLength = files.length + imageLength;
 
         if (fileLength > 9) {
@@ -159,9 +175,19 @@
           return false;
         }
 
+        let fileTypeList = ['image/png', 'image/jpg', 'image/jpeg', 'image/gif'];
+
         for (let i = 0; i < fileLength; i++) {
 
           let file = files[i];
+
+          if (fileTypeList.indexOf(file.type) === -1) {
+            window.$message('上传图片必须是 png, jpg, jpeg, gif 类型');
+            files = Array.from(files);
+            files.splice(i, 1);
+            console.log(files);
+            return false;
+          }
 
           let sectionHTML = document.createElement('section');
 

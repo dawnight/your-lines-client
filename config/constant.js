@@ -18,14 +18,14 @@ export const UPLOAD_FORMAL_MAP = [
   { id: 'other', name: '其他' }
 ];
 
-export const UPLOAD_FORMAL_LIST = Object.keys(UPLOAD_FORMAL_MAP);
+export const UPLOAD_FORMAL_LIST = UPLOAD_FORMAL_MAP.map(item => item.id);
 
 export const SEARCH_FORMAL_MAP = [
   { id: 'all', name: '全部形式' },
   ...UPLOAD_FORMAL_MAP
 ];
 
-export const SEARCH_FORMAL_LIST = Object.keys(SEARCH_FORMAL_MAP);
+export const SEARCH_FORMAL_LIST = SEARCH_FORMAL_MAP.map(item => item.id);
 
 export const UPLOAD_AREA_MAP = [
   { id: 'mainland', name: '中国大陆' },

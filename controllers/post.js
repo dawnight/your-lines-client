@@ -2,14 +2,14 @@ import path from 'path';
 import fs from 'fs';
 import uuid from 'uuid';
 import formidable from 'formidable';
-import { validationResult } from 'express-validator';
 
 import FilesModel from '../model/schema/files';
 import LinesModel from '../model/schema/lines';
-import { UPLOAD_AREA_MAP, UPLOAD_LANGUAGE_MAP, PREFIX_URL } from '../config/constant';
+import { UPLOAD_AREA_MAP, UPLOAD_FORMAL_MAP, UPLOAD_LANGUAGE_MAP, PREFIX_URL } from '../config/constant';
 import { navMap, logoInfo } from './common';
 import uploadToQiniu from '../helpers/qiniu';
 
+const uploadFormalMap = UPLOAD_FORMAL_MAP;
 const uploadAreaMap = UPLOAD_AREA_MAP;
 const uploadLanguageMap = UPLOAD_LANGUAGE_MAP;
 
@@ -20,6 +20,7 @@ export const renderPost = (req, res) => {
   res.render('post/index', {
     user: req.session.user,
     page,
+    uploadFormalMap,
     uploadAreaMap,
     uploadLanguageMap,
     navMap,
@@ -104,7 +105,8 @@ export const postLines = (req, res, next) => {
             originName: file.name,
             originFiled: field,
             size: file.size,
-            type: file.type,
+            type: 'image',
+            fullType: file.type,
             uuid: uuid(),
             hash: body.hash || '',
             key: body.key || '',
