@@ -1,19 +1,22 @@
+import * as LinesService from '../service/lines';
+import * as FileService from '../service/files';
+import * as UserService from '../service/user';
+import { removeRepeatElement } from '../helpers/utils';
+
 import {
   navList,
   logoInfo,
   searchFormalList,
   searchAreaList,
-  searchAreaMap,
   searchHelperList,
 } from '../config/constant';
-import LinesModel from '../model/schema/lines';
 
 const renderPage = 'home';
 
 export const renderHome = async (req, res) => {
   let query = req.query;
 
-  let { formalId = 'all', areaId = 'all', helperId = 'new', page = 1, pageSize = 20 } = query;
+  let { formalId = 'all', areaId = 'all', helperId = 'new' } = query;
 
   let params = {};
 
@@ -25,12 +28,38 @@ export const renderHome = async (req, res) => {
     params.areaId = areaId;
   }
 
-  let linesList = await LinesModel.find(params).sort({ createTime: -1 }).skip((page - 1) * pageSize).limit(pageSize);
+  let linesList = await LinesService.getLinesList(params);
 
-  linesList = linesList.map(lines => {
-    lines.areaCn = searchAreaMap[lines.areaId];
-    return lines;
+  let imageIdList = [];
+  let uploaderIdList = [];
+
+  linesList.forEach(lines => {
+    lines.imageIdList.forEach(imageId => {
+      imageIdList.push(imageId);
+    });
+    uploaderIdList.push(lines.uploaderId);
   });
+
+  imageIdList = removeRepeatElement(imageIdList);
+  uploaderIdList = removeRepeatElement(uploaderIdList);
+
+  let fileList = await FileService.getFileBatchMap(imageIdList);
+  let uploaderList = await UserService.getUserBatchMap(uploaderIdList);
+
+  linesList.map(lines => {
+    linesList.imageList = [];
+    fileList.forEach(file => {
+      if (lines.imageIdList.indexOf(file.id > -1)) {
+        linesList.imageList.push(file.url);
+      }
+    });
+    let uploader = uploaderList.find(u => u.id === lines.uploaderId);
+    if (uploader) {
+      lines.uploaderName = uploader.username;
+    }
+  });
+
+  console.log(linesList);
 
   res.render('home/index', {
     user: req.session.user,

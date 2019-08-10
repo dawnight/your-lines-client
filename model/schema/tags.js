@@ -1,7 +1,9 @@
 import mongoose from 'mongoose';
 import { COMMON_FIELDS } from './baseInfo';
+import { formatTime } from '../../helpers/utils';
 
 const Schema = mongoose.Schema;
+const ObjectId = Schema.Types.ObjectId;
 
 const TagsSchema = new Schema({
   type: { type:String, required: true },
@@ -9,6 +11,17 @@ const TagsSchema = new Schema({
   nameEn: { type:String, required: true },
   ...COMMON_FIELDS
 });
+
+
+TagsSchema.methods.toJSON = function () {
+  let result = this;
+  result.createTime = formatTime(result.createTime);
+  result.updateTime = formatTime(result.updateTime);
+  result.id = ObjectId(result._id).toString();
+  delete result._id;
+  delete result.__v;
+  return result;
+};
 
 let TagsModel = mongoose.model('tags', TagsSchema);
 

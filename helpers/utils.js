@@ -1,4 +1,6 @@
 import moment from 'moment';
+import validator from 'validator';
+import mongoose from 'mongoose';
 import os from 'os';
 
 export const formatDate = date => moment(date).format('YYYY-MM-DD');
@@ -30,3 +32,16 @@ export const reduceListToObj = list => list.reduce((prev, curr) => {
   prev[curr.id] = curr.name;
   return prev;
 }, {});
+
+export const removeRepeatElement = list => Array.from(new Set(list));
+
+export const changeToMongoID = id => mongoose.Types.ObjectId(id);
+
+export const changeListToMongoID = idList => {
+  return idList.map(id => {
+    if (!validator.isMongoId(id)) {
+      id = changeToMongoID(id);
+    }
+    return id;
+  });
+};

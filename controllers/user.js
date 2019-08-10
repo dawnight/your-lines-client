@@ -1,6 +1,7 @@
 import { navList, logoInfo } from '../config/constant';
-import UserModel from '../model/schema/user';
 import { validationResult } from 'express-validator';
+import * as UserService from '../service/user';
+import UserModel from '../model/schema/user';
 
 const page = 'user';
 
@@ -87,7 +88,7 @@ export const signUp = async (req, res) => {
   }
   try {
 
-    let user = await UserModel.findOne({ email });
+    let user = await UserService.getOneUser({ email });
 
     if (user) {
 
@@ -100,7 +101,7 @@ export const signUp = async (req, res) => {
       return res.redirect('/user/signUp');
     }
 
-    user = await UserModel.create({ email, password });
+    user = await UserService.createUser({ email, password });
 
     req.session.user = user;
 
@@ -120,8 +121,6 @@ export const login = async (req, res) => {
 
   let vRes = validationResult(req);
 
-  console.log(vRes.errors);
-
   if (!vRes.isEmpty()) {
 
     req.flash('errors', vRes.errors);
@@ -129,16 +128,11 @@ export const login = async (req, res) => {
     return res.status(422).redirect('/user/login');
   }
 
-
   const { email, password } = req.body;
-
-  console.log(email, password);
 
   try {
 
-    let user = await UserModel.findOne({ email });
-
-    console.log(user);
+    let user = await UserService.getOneUser({ email });
 
     if (user) {
       user.comparePassword(password, user.password, (err, match) => {

@@ -14,7 +14,7 @@
       <div class="row mb-3">
         <label for="areaId" class="mb-2">影视类型</label>
         <select class="custom-select d-block w-100" name="formalId" required>
-          {% for option in uploadFormalMap %}
+          {% for option in uploadFormalList %}
             {% if loop.first %}
               <option selected value="{{ option.id }}">{{ option.name }}</option>
             {% else %}

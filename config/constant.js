@@ -102,7 +102,7 @@ export const fileTypeMap =  reduceListToObj(fileTypeList);
 
 export const fileTypeIdList = Object.keys(fileTypeMap);
 
-export const PREFIX_URL = 'http://upload.ikite.top';
+export const PREFIX_URL = 'http://upload.ikite.top/';
 
 export const qiniuConfig = {
   AK: 's3pvYpoUGW_ehfTxWcP1wN5Tq_y6J8k62k69UPE4',

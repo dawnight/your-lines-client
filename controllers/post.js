@@ -4,20 +4,19 @@ import uuid from 'uuid';
 import formidable from 'formidable';
 import validator from 'validator';
 
-import FilesModel from '../model/schema/files';
-import LinesModel from '../model/schema/lines';
-
-import QiniuCloud from '../helpers/qiniu';
+import * as LinesService from '../service/lines';
+import * as FilesService from '../service/files';
+import QiniuService from '../service/qiniu';
 
 import {
   uploadAreaList,
   uploadFormalList,
   uploadLanguageList,
   navList,
-  logoInfo,
-  PREFIX_URL } from '../config/constant';
+  logoInfo } from '../config/constant';
 
 import { CODE_OK, CODE_ERROR } from '../config/basic';
+
 
 const page = 'post';
 
@@ -35,6 +34,7 @@ export const renderPost = (req, res) => {
   });
 };
 
+// 投稿
 export const postLines = (req, res, next) => {
 
   let distPath = path.join(__dirname, '../uploads/');
@@ -70,7 +70,7 @@ export const postLines = (req, res, next) => {
       console.log(err);
     }
 
-    let fileURLList = [];
+    let imageIdList = [];
 
     let body = {};
 
@@ -98,8 +98,7 @@ export const postLines = (req, res, next) => {
       fs.renameSync(file.path, filePath);
 
       try {
-        // body = await uploadToQiniu(fileName, filePath);
-        body = await QiniuCloud.uploadToQiniu(fileName, filePath);
+        body = await QiniuService.uploadToQiniu(fileName, filePath);
       } catch (e) {
         // TODO 记录上传失败时错误，并把错误记录，作为信息记录发送给用户
         console.log(e);
@@ -107,7 +106,7 @@ export const postLines = (req, res, next) => {
 
         if (body) {
           let newFile = {
-            uploader: req.session.user.id,
+            uploaderId: req.session.user.id,
             originPath: file.path,
             originName: file.name,
             originFiled: field,
@@ -117,23 +116,23 @@ export const postLines = (req, res, next) => {
             fullType: file.type,
             uuid: uuid(),
             hash: body.hash || '',
-            key: body.key || '',
-            url: body.hash ? `${PREFIX_URL}/${body.key}` : ''
+            key: body.key || ''
           };
 
-          await FilesModel.create(newFile);
+          newFile = await FilesService.createFile(newFile);
 
-          if (newFile.url) {
-            fileURLList.push(newFile.url);
+          if (newFile._id) {
+            imageIdList.push(newFile._id);
           }
 
           if (i === allFile.length - 1) {
 
-            fields.URLList = fileURLList;
+            fields.imageIdList = imageIdList;
 
-            fields.uploader = req.session.user.id;
+            fields.uploaderId = req.session.user.id;
 
-            await LinesModel.create(fields);
+            await LinesService.createLines(fields);
+
           }
         }
       }
@@ -160,9 +159,45 @@ export const postLines = (req, res, next) => {
 
 };
 
+// 通过 id 获取某一条 lines
+export const getLinesById = async (req, res) => {
+  let id = req.body.id;
+
+  if (!validator.isMongoId(id)) {
+    return res.json({
+      status: CODE_ERROR,
+      msg: 'id 错误，不是标准的 Mongo ID'
+    });
+  }
+
+  try {
+    let file = await LinesService.getLinesById(id);
+    if (file) {
+      return res.json({
+        status: CODE_OK,
+        data: file
+      });
+    }
+    return res.json({
+      status: CODE_ERROR,
+      msg: '未找到该 id 信息'
+    });
+
+  } catch (err) {
+
+    console.log(err);
+
+    return res.json({
+      status: CODE_ERROR,
+      msg: '服务错误'
+    });
+  }
+};
+
+// 批量删除七牛云图片
 export const deleteBatchMap = async (req, res) => {
 
-  let fileList = await FilesModel.find({ inQiniu: true });
+  let fileList = LinesService.getLinesBatchMap({ inQiniu: true });
 
   if (fileList.length === 0) {
     return res.json({
@@ -183,19 +218,42 @@ export const deleteBatchMap = async (req, res) => {
 
   });
 
-  await QiniuCloud.deleteBatchFile(keyList);
+  await QiniuService.deleteBatchFile(keyList);
 
-  await FilesModel.updateMany({ _id: { $in: ids } }, { inQiniu: false });
-
+  await LinesService.updateLinesById({ _id: { $in: ids } }, { inQiniu: false });
+  
   return res.json({
     status: CODE_OK,
     msg: '批量删除成功'
   });
 };
 
-export const deleteOne = async (req, res) => {
+export const deleteOneLines = async (req, res) => {
 
-  let id = req.body.id;
+  let id = req.params.id;
+
+  if (!validator.isMongoId(id)) {
+    return res.json({
+      status: CODE_ERROR,
+      msg: 'id 错误，不是标准的 Mongo ID'
+    });
+  }
+
+  let lines = LinesService.getLinesByIdAndUpdate(id, { isDeleted: true });
+
+  console.log(lines);
+
+  let imageList = await FilesService.updateFileBatchMap(lines.imageIdList, { isDeleted: true });
+
+  console.log(imageList);
+
+};
+
+// 严格来讲，要从台词去关联然后删除图片，不能直接删除图片
+// 单个删除七牛云图片
+export const deleteOneFile = async (req, res) => {
+
+  let id = req.params.id;
 
   if (!validator.isMongoId(id)) {
     return res.json({
@@ -205,13 +263,13 @@ export const deleteOne = async (req, res) => {
   }
 
   try {
-    let file = await FilesModel.findOne({ _id: id });
+    let file = await LinesService.getLinesById(id);
 
     if (file) {
 
-      await QiniuCloud.deleteOneFile(file.key);
+      await QiniuService.deleteOneFile(file.key);
 
-      await FilesModel.updateOne({ _id: id }, { inQiniu: false });
+      await LinesService.updateLinesById(id, { inQiniu: false });
 
       return res.json({
         status: CODE_OK,

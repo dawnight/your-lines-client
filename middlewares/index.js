@@ -2,11 +2,14 @@ import session from 'express-session';
 import bodyParser from 'body-parser';
 import morgan from 'morgan';
 import log4js from 'log4js';
+import cors from 'cors';
 import logger from './logger';
 import redisStore from 'connect-redis';
 import flash from 'connect-flash';
 
 export default app => {
+  app.use(cors());
+
   app.use(morgan(function (tokens, req, res) {
     return [
       tokens.method(req, res),

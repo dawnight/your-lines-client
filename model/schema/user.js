@@ -4,6 +4,7 @@ import { formatTime, randomString } from '../../helpers/utils';
 import { COMMON_FIELDS } from './baseInfo';
 
 const Schema = mongoose.Schema;
+const ObjectId = Schema.Types.ObjectId;
 const SAFE_WORK_FACTOR = 5;
 
 const UserSchema = new Schema({
@@ -19,6 +20,7 @@ const UserSchema = new Schema({
   // auth 为 2， 表示是管理端操作人员
   // auth 为 3， 表示是管理端的管理员
   auth: { type: Number, default: 1 },
+  creatorId: { type: ObjectId, ref: 'user', required: false },
   ...COMMON_FIELDS
 });
 
@@ -47,7 +49,7 @@ UserSchema.pre('save', function(next) {
 });
 
 UserSchema.methods.toJSON = function() {
-  let result = this.toObject();
+  let result = this;
   result.createTime = formatTime(result.createTime);
   result.updateTime = formatTime(result.updateTime);
   result.id = result._id;
