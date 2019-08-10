@@ -106,7 +106,7 @@ export const postLines = (req, res, next) => {
 
         if (body) {
           let newFile = {
-            uploaderId: req.session.user.id,
+            _uploaderId: req.session.user.id,
             originPath: file.path,
             originName: file.name,
             originFiled: field,
@@ -129,7 +129,7 @@ export const postLines = (req, res, next) => {
 
             fields.imageIdList = imageIdList;
 
-            fields.uploaderId = req.session.user.id;
+            fields._uploaderId = req.session.user.id;
 
             await LinesService.createLines(fields);
 

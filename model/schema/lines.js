@@ -7,13 +7,13 @@ import {
   searchLanguageMap,
   searchAreaMap
 } from '../../config/constant';
-import { formatTime } from '../../helpers/utils';
+import { changeMongoIDToStr } from '../../helpers/utils';
 
 const Schema = mongoose.Schema;
 const ObjectId = Schema.Types.ObjectId;
 
 const LinesSchema = new Schema({
-  uploaderId: { type: ObjectId, ref: 'user', required: true },
+  _uploaderId: { type: ObjectId, ref: 'user', required: true },
   originName: { type: String, required: true },
   nameCn: { type: String, required: true },
   formalId: { type: String, required: true, enum: searchFormalIdList },
@@ -41,16 +41,9 @@ LinesSchema.virtual('transLangCn').get(function () {
   return searchLanguageMap[this.transLangId];
 });
 
-LinesSchema.methods.toJSON = function () {
-  let result = this;
-  result.createTime = formatTime(result.createTime);
-  result.updateTime = formatTime(result.updateTime);
-  result.id = ObjectId(result._id).toString();
-  result.uploaderId = ObjectId(result.uploaderId).toString();
-  delete result._id;
-  delete result.__v;
-  return result;
-};
+LinesSchema.virtual('uploaderId').get(function () {
+  return changeMongoIDToStr(this._uploaderId);
+});
 
 let LinesModel = mongoose.model('lines', LinesSchema);
 

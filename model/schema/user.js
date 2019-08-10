@@ -20,7 +20,7 @@ const UserSchema = new Schema({
   // auth 为 2， 表示是管理端操作人员
   // auth 为 3， 表示是管理端的管理员
   auth: { type: Number, default: 1 },
-  creatorId: { type: ObjectId, ref: 'user', required: false },
+  _creatorId: { type: ObjectId, ref: 'user', required: false },
   ...COMMON_FIELDS
 });
 
@@ -48,8 +48,11 @@ UserSchema.pre('save', function(next) {
   }
 });
 
+UserSchema.set('toObject', { getters: true, virtuals: true });
+UserSchema.set('toJSON', { getters: true, virtuals: true });
+
 UserSchema.methods.toJSON = function() {
-  let result = this;
+  let result = this.toObject();
   result.createTime = formatTime(result.createTime);
   result.updateTime = formatTime(result.updateTime);
   result.id = result._id;

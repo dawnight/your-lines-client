@@ -2,7 +2,8 @@ import UserModel from '../model/schema/user';
 
 /** 增加 **/
 export const createUser = async (data = {}) => {
-  return await UserModel.create(data);
+  let user = await UserModel.create(data);
+  return user;
 };
 
 /** 删除 **/

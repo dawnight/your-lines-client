@@ -59,8 +59,6 @@ export const renderHome = async (req, res) => {
     }
   });
 
-  console.log(linesList);
-
   res.render('home/index', {
     user: req.session.user,
     renderPage,

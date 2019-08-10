@@ -2,7 +2,9 @@ import LinesModel from '../model/schema/lines';
 import { changeListToMongoID } from '../helpers/utils';
 /** 增加 **/
 export const createLines = async (data = {}) => {
-  return await new LinesModel(data).save();
+  console.log('createLines');
+  console.log(data);
+  return await LinesModel.create(data);
 };
 
 /** 删除 **/

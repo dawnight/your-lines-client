@@ -1,13 +1,14 @@
 import mongoose from 'mongoose';
 import { COMMON_FIELDS } from './baseInfo';
 import { fileTypeIdList, PREFIX_URL } from '../../config/constant';
-import { formatTime } from '../../helpers/utils';
+import { formatTime, changeMongoIDToStr } from '../../helpers/utils';
 
 const Schema = mongoose.Schema;
 const ObjectId = Schema.Types.ObjectId;
 
 const FilesSchema = new Schema({
-  uploaderId: { type: ObjectId, ref: 'user', required: true },
+  _uploaderId: {
+    type: ObjectId, ref: 'user', required: true },
   inQiniu: { type: Boolean, default: false },
   originPath: { type: String, required: true },
   originName: { type: String, required: true },
@@ -28,8 +29,12 @@ FilesSchema.virtual('url').get(function () {
   return PREFIX_URL + this.key;
 });
 
+FilesSchema.virtual('uploaderId').get(function () {
+  return changeMongoIDToStr(this._uploaderId);
+});
+
 FilesSchema.methods.toJSON = function () {
-  let result = this;
+  let result = this.toObject();
   result.createTime = formatTime(result.createTime);
   result.updateTime = formatTime(result.updateTime);
   result.id = ObjectId(result._id).toString();

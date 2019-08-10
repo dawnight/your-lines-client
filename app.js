@@ -22,9 +22,6 @@ global.Promise = bluebird;
 //   next();
 // });
 
-app.use(ErrorHandle.handle404);
-app.use(ErrorHandle.handle500);
-
 middlewares(app);
 
 app.set('view engine', 'njk');
@@ -45,6 +42,9 @@ app.use(express.static(path.join(__dirname, 'dist')));
 })();
 
 router(app);
+
+app.use(ErrorHandle.handle404);
+app.use(ErrorHandle.handle500);
 
 app.listen(PORT, err => {
   if (err) {

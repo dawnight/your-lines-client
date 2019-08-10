@@ -1,7 +1,6 @@
 import { navList, logoInfo } from '../config/constant';
 import { validationResult } from 'express-validator';
 import * as UserService from '../service/user';
-import UserModel from '../model/schema/user';
 
 const page = 'user';
 
@@ -59,6 +58,7 @@ export const renderSignUp = (req, res) => {
 
 export const renderLogout = (req, res) => {
   req.session.user = null;
+  req.session.flash = null;
   res.redirect('/');
 };
 
@@ -134,12 +134,15 @@ export const login = async (req, res) => {
 
     let user = await UserService.getOneUser({ email });
 
+    console.log('user');
+    console.log(user);
+
     if (user) {
       user.comparePassword(password, user.password, (err, match) => {
 
         if (match) {
 
-          req.session.user = new UserModel(user);
+          req.session.user = user;
 
           req.flash('success', '登录成功');
 

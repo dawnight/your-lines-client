@@ -35,12 +35,14 @@ export const reduceListToObj = list => list.reduce((prev, curr) => {
 
 export const removeRepeatElement = list => Array.from(new Set(list));
 
-export const changeToMongoID = id => mongoose.Types.ObjectId(id);
+export const changeStrToMongoID = str => mongoose.Types.ObjectId(str);
+
+export const changeMongoIDToStr = id => mongoose.Types.ObjectId(id).toString();
 
 export const changeListToMongoID = idList => {
   return idList.map(id => {
     if (!validator.isMongoId(id)) {
-      id = changeToMongoID(id);
+      id = changeStrToMongoID(id);
     }
     return id;
   });

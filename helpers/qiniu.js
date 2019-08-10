@@ -55,6 +55,7 @@ class QiniuCloud {
         } else {
           console.log(body);
           console.log(info);
+          reject(err);
         }
 
       });

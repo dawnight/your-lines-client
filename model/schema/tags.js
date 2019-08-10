@@ -14,7 +14,7 @@ const TagsSchema = new Schema({
 
 
 TagsSchema.methods.toJSON = function () {
-  let result = this;
+  let result = this.toObject();
   result.createTime = formatTime(result.createTime);
   result.updateTime = formatTime(result.updateTime);
   result.id = ObjectId(result._id).toString();

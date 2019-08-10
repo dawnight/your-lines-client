@@ -55,6 +55,7 @@ class QiniuService {
         } else {
           console.log(body);
           console.log(info);
+          reject();
         }
 
       });
