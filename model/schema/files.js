@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import { COMMON_FIELDS } from './baseInfo';
-import { FILE_TYPE_LIST } from '../../config/constant';
+import { fileTypeIdList } from '../../config/constant';
 
 const Schema = mongoose.Schema;
 const ObjectId = Schema.Types.ObjectId;
@@ -14,7 +14,7 @@ const FilesSchema = new Schema({
   size: { type: Number, required: true },
   url: { type: String, default: '' },
   fullType: { type: String, default: '' },
-  type: { type: String, default: '', enum: FILE_TYPE_LIST },
+  type: { type: String, default: '', enum: fileTypeIdList },
   uuid: { type: String, required: true },
   hash: { type: String, default: '' },
   key: { type: String, default: '' },

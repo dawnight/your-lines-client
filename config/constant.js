@@ -1,9 +1,11 @@
-export const LOGO_INFO = {
+import { reduceListToObj } from '../helpers/utils';
+
+export const logoInfo = {
   alt: 'your lines logo',
   url: 'http://image.ikite.top/google-logo.jpg'
 };
 
-export const NAV_MAP = [
+export const navList = [
   { id: 'home', href: '/', name: '首页' },
   { id: 'tv', href: '/tv', name: '影视中心' },
   { id: 'post', href: '/post', name: '投稿' },
@@ -11,23 +13,27 @@ export const NAV_MAP = [
   { id: 'about', href: '/about', name: '关于' }
 ];
 
-export const UPLOAD_FORMAL_MAP = [
+export const uploadFormalList = [
   { id: 'movie', name: '电影' },
   { id: 'tv', name: '电视剧' },
   { id: 'carton', name: '动漫' },
   { id: 'other', name: '其他' }
 ];
 
-export const UPLOAD_FORMAL_LIST = UPLOAD_FORMAL_MAP.map(item => item.id);
+export const uploadFormalMap = reduceListToObj(uploadFormalList);
 
-export const SEARCH_FORMAL_MAP = [
+export const uploadFormalIdList = Object.keys(uploadFormalMap);
+
+export const searchFormalList = [
   { id: 'all', name: '全部形式' },
-  ...UPLOAD_FORMAL_MAP
+  ...uploadFormalList
 ];
 
-export const SEARCH_FORMAL_LIST = SEARCH_FORMAL_MAP.map(item => item.id);
+export const searchFormalMap = reduceListToObj(searchFormalList);
 
-export const UPLOAD_AREA_MAP = [
+export const searchFormalIdList = Object.keys(searchFormalMap);
+
+export const uploadAreaList = [
   { id: 'mainland', name: '中国大陆' },
   { id: 'gat', name: '港澳台' },
   { id: 'usa', name: '美国' },
@@ -37,16 +43,20 @@ export const UPLOAD_AREA_MAP = [
   { id: 'no', name: '未知' }
 ];
 
-export const UPLOAD_AREA_LIST = UPLOAD_AREA_MAP.map(item => item.id);
+export const uploadAreaMap = reduceListToObj(uploadAreaList);
 
-export const SEARCH_AREA_MAP = [
+export const uploadArealIdList = Object.keys(uploadAreaMap);
+
+export const searchAreaList = [
   { id: 'all', name: '全部地区' },
-  ...UPLOAD_AREA_MAP
+  ...uploadAreaList
 ];
 
-export const SEARCH_AREA_LIST = SEARCH_AREA_MAP.map(item => item.id);
+export const searchAreaMap = reduceListToObj(searchAreaList);
 
-export const UPLOAD_LANGUAGE_MAP = [
+export const searchAreaIdList = Object.keys(searchAreaMap);
+
+export const uploadLanguageList = [
   { id: 'cn', name: '汉语' },
   { id: 'en', name: '英语' },
   { id: 'jp', name: '日语' },
@@ -55,20 +65,29 @@ export const UPLOAD_LANGUAGE_MAP = [
   { id: 'no', name: '未知' }
 ];
 
-export const UPLOAD_LANGUAGE_LIST = UPLOAD_LANGUAGE_MAP.map(item => item.id);
+export const uploadLanguageMap = reduceListToObj(uploadLanguageList);
 
-export const LANGUAGE_MAP = UPLOAD_LANGUAGE_MAP;
+export const uploadLanguageIdList = Object.keys(uploadLanguageMap);
 
-export const LANGUAGE_LIST = LANGUAGE_MAP.map(item => item.id);
+export const searchLanguageList = [
+  { id: 'all', name: '全部语言' },
+  ...uploadLanguageList
+];
 
-export const SEARCH_HELPER_MAP = [
+export const searchLanguageMap = reduceListToObj(searchLanguageList);
+
+export const searchLanguageIdList = Object.keys(searchLanguageMap);
+
+export const searchHelperList = [
   { id: 'new', name: '最新上传' },
   { id: 'like', name: '点赞最多' }
 ];
 
-export const SEARCH_HELPER_LIST = SEARCH_HELPER_MAP.map(item => item.id);
+export const searchHelperMap = reduceListToObj(searchHelperList);
 
-export const FILE_TYPE_MAP = [
+export const searchHelperIdList = Object.keys(searchHelperMap);
+
+export const fileTypeList = [
   { id: 'image', name: '图片' },
   { id: 'audio', name: '音乐' },
   { id: 'video', name: '视频' },
@@ -79,7 +98,9 @@ export const FILE_TYPE_MAP = [
   { id: 'txt', name: 'txt' },
 ];
 
-export const FILE_TYPE_LIST =  FILE_TYPE_MAP.map(item => item.id);
+export const fileTypeMap =  reduceListToObj(fileTypeList);
+
+export const fileTypeIdList = Object.keys(fileTypeMap);
 
 export const PREFIX_URL = 'http://upload.ikite.top';
 

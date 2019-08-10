@@ -1,4 +1,4 @@
-import { navMap, logoInfo } from './common';
+import { navList, logoInfo } from '../config/constant';
 import UserModel from '../model/schema/user';
 import { validationResult } from 'express-validator';
 
@@ -8,7 +8,7 @@ export const renderUser = (req, res) => {
   res.render('user/index', {
     user: req.session.user,
     page,
-    navMap,
+    navList,
     logoInfo
   });
 };
@@ -21,7 +21,7 @@ export const renderLogin = (req, res) => {
       user: null,
       errors: req.flash('errors'),
       email: req.flash('email'),
-      navMap,
+      navList,
       logoInfo
     });
   } else {
@@ -43,7 +43,7 @@ export const renderSignUp = (req, res) => {
       page,
       errors: req.flash('errors'),
       email: req.flash('email'),
-      navMap,
+      navList,
       logoInfo
     });
   } else {

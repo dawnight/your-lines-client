@@ -2,18 +2,22 @@ import path from 'path';
 import fs from 'fs';
 import uuid from 'uuid';
 import formidable from 'formidable';
+import validator from 'validator';
 
 import FilesModel from '../model/schema/files';
 import LinesModel from '../model/schema/lines';
-import { UPLOAD_AREA_MAP, UPLOAD_FORMAL_MAP, UPLOAD_LANGUAGE_MAP, PREFIX_URL } from '../config/constant';
-import { navMap, logoInfo } from './common';
-import QiniuCloud from '../helpers/qiniu';
-import { CODE_OK, CODE_ERROR } from '../config/basic';
-import validator from 'validator';
 
-const uploadFormalMap = UPLOAD_FORMAL_MAP;
-const uploadAreaMap = UPLOAD_AREA_MAP;
-const uploadLanguageMap = UPLOAD_LANGUAGE_MAP;
+import QiniuCloud from '../helpers/qiniu';
+
+import {
+  uploadAreaList,
+  uploadFormalList,
+  uploadLanguageList,
+  navList,
+  logoInfo,
+  PREFIX_URL } from '../config/constant';
+
+import { CODE_OK, CODE_ERROR } from '../config/basic';
 
 const page = 'post';
 
@@ -22,11 +26,11 @@ export const renderPost = (req, res) => {
   res.render('post/index', {
     user: req.session.user,
     page,
-    uploadFormalMap,
-    uploadAreaMap,
-    uploadLanguageMap,
-    navMap,
+    navList,
     logoInfo,
+    uploadAreaList,
+    uploadFormalList,
+    uploadLanguageList,
     errors: req.flash('errors'),
   });
 };
@@ -150,7 +154,7 @@ export const postLines = (req, res, next) => {
       user: req.session.user,
       page,
       message: '投稿成功',
-      navMap
+      navList
     });
   });
 

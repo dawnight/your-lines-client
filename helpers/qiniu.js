@@ -23,7 +23,6 @@ class QiniuCloud {
     this.putExtra = new qiniu.form_up.PutExtra();
   }
 
-
   uploadToQiniu = (key, filePath) => {
     return new Promise((resolve, reject) => {
       this.formUploader.putFile(this.uploadToken, key, filePath, this.putExtra, (err, body, info) => {
@@ -85,7 +84,6 @@ class QiniuCloud {
       });
     });
   };
-
 
 }
 

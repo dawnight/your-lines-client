@@ -1,26 +1,48 @@
-import { navMap, logoInfo } from './common';
-import { SEARCH_FORMAL_MAP, SEARCH_AREA_MAP, SEARCH_HELPER_MAP } from '../config/constant';
+import {
+  navList,
+  logoInfo,
+  searchFormalList,
+  searchAreaList,
+  searchAreaMap,
+  searchHelperList,
+} from '../config/constant';
+import LinesModel from '../model/schema/lines';
 
-const searchFormalMap = SEARCH_FORMAL_MAP;
-const searchAreaMap = SEARCH_AREA_MAP;
-const searchHelperMap = SEARCH_HELPER_MAP;
+const renderPage = 'home';
 
-const page = 'home';
-
-export const renderHome = (req, res) => {
+export const renderHome = async (req, res) => {
   let query = req.query;
-  const { formalId = 'all', areaId = 'all', helperId = 'new' } = query;
+
+  let { formalId = 'all', areaId = 'all', helperId = 'new', page = 1, pageSize = 20 } = query;
+
+  let params = {};
+
+  if (formalId !== 'all') {
+    params.formalId = formalId;
+  }
+
+  if (areaId !== 'all') {
+    params.areaId = areaId;
+  }
+
+  let linesList = await LinesModel.find(params).sort({ createTime: -1 }).skip((page - 1) * pageSize).limit(pageSize);
+
+  linesList = linesList.map(lines => {
+    lines.areaCn = searchAreaMap[lines.areaId];
+    return lines;
+  });
 
   res.render('home/index', {
     user: req.session.user,
-    page,
-    navMap,
-    searchFormalMap,
-    searchAreaMap,
-    searchHelperMap,
+    renderPage,
+    navList,
+    searchFormalList,
+    searchAreaList,
+    searchHelperList,
     logoInfo,
     formalId,
     areaId,
-    helperId
+    helperId,
+    linesList
   });
 };

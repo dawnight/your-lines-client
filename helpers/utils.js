@@ -25,3 +25,8 @@ export const getIPAddress = () => {
   }
   return ipList;
 };
+
+export const reduceListToObj = list => list.reduce((prev, curr) => {
+  prev[curr.id] = curr.name;
+  return prev;
+}, {});
