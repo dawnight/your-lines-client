@@ -27,13 +27,13 @@
 
       <div class="row mb-3">
         <label for="originName" class="mb-2">原剧剧名</label>
-        <input type="text" class="form-control" name="originName" required>
+        <input type="text" class="form-control" name="originName">
         <div class="invalid-feedback" style="width: 100%;">请输入原剧剧名</div>
       </div>
 
       <div class="row mb-3">
         <label for="nameCn" class="mb-2">中文剧名</label>
-        <input type="text" class="form-control" name="nameCn" required>
+        <input type="text" class="form-control" name="nameCn">
         <div class="invalid-feedback" style="width: 100%;">请输入中文剧名</div>
       </div>
 
@@ -67,13 +67,13 @@
 
       <div class="row mb-3">
         <label for="linesText" class="mb-2">剧中台词</label>
-        <textarea class="form-control" value="" name="linesText" rows="3" required></textarea>
+        <textarea class="form-control" value="" name="linesText" rows="3"></textarea>
         <div class="invalid-feedback" style="width: 100%;">请输入剧中台词</div>
       </div>
 
       <div class="row mb-3">
         <label for="transLangId" class="mb-2">台词翻译语言</label>
-        <select class="custom-select d-block w-100" name="transLangId" required>
+        <select class="custom-select d-block w-100" name="transLangId">
           {% for option in uploadLanguageList %}
             {% if loop.first %}
               <option selected="{{ option.id }}" value="{{ option.id }}">{{ option.name }}</option>
@@ -87,7 +87,7 @@
 
       <div class="row mb-3">
         <label for="transText" class="mb-2">台词翻译</label>
-        <textarea class="form-control" value="" name="transText" rows="3" required></textarea>
+        <textarea class="form-control" value="" name="transText" rows="3"></textarea>
         <div class="invalid-feedback" style="width: 100%;">请输入台词翻译</div>
       </div>
 

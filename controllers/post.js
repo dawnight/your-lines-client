@@ -17,7 +17,6 @@ import {
 
 import { CODE_OK, CODE_ERROR } from '../config/basic';
 
-
 const page = 'post';
 
 export const renderPost = (req, res) => {
@@ -66,6 +65,7 @@ export const postLines = (req, res, next) => {
   });
 
   form.parse(req, async (err, fields) => {
+
     if (err) {
       console.log(err);
     }
@@ -76,7 +76,12 @@ export const postLines = (req, res, next) => {
 
     let len = allFile.length;
 
-    if (len === 0) {
+    if (len === 1 && allFile[0].file.size === 0) {
+      fields.imageIdList = imageIdList;
+
+      fields._uploaderId = req.session.user.id;
+
+      await LinesService.createLines(fields);
       return;
     }
 
@@ -116,7 +121,8 @@ export const postLines = (req, res, next) => {
             fullType: file.type,
             uuid: uuid(),
             hash: body.hash || '',
-            key: body.key || ''
+            key: body.key || '',
+            priority: i
           };
 
           newFile = await FilesService.createFile(newFile);
@@ -292,4 +298,3 @@ export const deleteOneFile = async (req, res) => {
     });
   }
 };
-

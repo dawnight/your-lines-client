@@ -32,13 +32,19 @@ export const getLinesById = async id => {
   return await LinesModel.findById(id);
 };
 
+export const getLinesCount = async params => {
+  return await LinesModel.count(params);
+};
+
 export const getLinesBatchMap = async (idList) => {
   idList = changeListToMongoID(idList);
   return await LinesModel.find({ _id: { $in: idList } });
 };
 
 export const getLinesList = async (conditions = {}, sort = {}, page = 1, pageSize = 20) => {
-  return await LinesModel.find(conditions).sort(sort).skip((page - 1) * pageSize).limit(pageSize);
+  page = Number(page);
+  pageSize = Number(pageSize);
+  return await LinesModel.find(conditions).sort(sort).skip((page - 1) * Number(pageSize)).limit(pageSize);
 };
 
 /** 查询并修改 **/

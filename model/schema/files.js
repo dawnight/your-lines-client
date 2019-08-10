@@ -19,6 +19,8 @@ const FilesSchema = new Schema({
   uuid: { type: String, required: true },
   hash: { type: String, default: '' },
   key: { type: String, default: '' },
+  // priority 是图片显示的优先级，数值越大，顺序越靠前
+  priority: { type: Number, default: 0 },
   ...COMMON_FIELDS
 });
 

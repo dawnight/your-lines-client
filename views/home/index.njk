@@ -1,55 +1,83 @@
 {% extends "../layout.njk" %}
 
 {% block css %}
-<link rel="stylesheet" href="/css/home.min.css">
+  <link rel="stylesheet" href="/css/home.min.css">
 {% endblock %}
 
 {% block content %}
-<div class="category">
-  <ul class="line">
-    {% for item in searchFormalList %}
-      <li class="item">
-        <a class=" {% if item.id === formalId %}active{% endif %}"
-           href="?formalId={{ item.id }}&areaId={{ areaId }}&helperId={{ helperId }}">{{ item.name }}</a>
-      </li>
-    {% endfor %}
-  </ul>
-  <ul class="line">
-    {% for item in searchAreaList %}
-      <li class="item">
-        <a class=" {% if item.id === areaId %}active{% endif %}"
-           href="?formalId={{ formalId }}&areaId={{ item.id }}&helperId={{ helperId }}">{{ item.name }}</a>
-      </li>
-    {% endfor %}
-  </ul>
-  <ul class="line">
-    {% for item in searchHelperList %}
-      <li class="item">
-        <a class=" {% if item.id === helperId %}active{% endif %}"
-           href="?formalId={{ formalId }}&areaId={{ areaId }}&helperId={{ item.id }}">{{ item.name }}</a>
-      </li>
-    {% endfor %}
-  </ul>
-</div>
+  <div class="category">
+    <ul class="line">
+      {% for item in searchFormalList %}
+        <li class="item">
+          <a class=" {% if item.id === formalId %}active{% endif %}"
+             href="?formalId={{ item.id }}&areaId={{ areaId }}&helperId={{ helperId }}">{{ item.name }}</a>
+        </li>
+      {% endfor %}
+    </ul>
+    <ul class="line">
+      {% for item in searchAreaList %}
+        <li class="item">
+          <a class=" {% if item.id === areaId %}active{% endif %}"
+             href="?formalId={{ formalId }}&areaId={{ item.id }}&helperId={{ helperId }}">{{ item.name }}</a>
+        </li>
+      {% endfor %}
+    </ul>
+    <ul class="line">
+      {% for item in searchHelperList %}
+        <li class="item">
+          <a class=" {% if item.id === helperId %}active{% endif %}"
+             href="?formalId={{ formalId }}&areaId={{ areaId }}&helperId={{ item.id }}">{{ item.name }}</a>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
 
-<div class="list-wrapper">
-  <ul>
-    {% for lines in linesList %}
-      <li class="card">
-        <div class="card-header">
-          <h3 class="card-title">{{ loop.index }}. {{ lines.nameCn }} - {{ lines.originName }}</h3>
-        </div>
-        <div class="card-body">
-          <h3><span class="font-weight-bold">原剧：{{ lines.linesLangCn }}</span></h3>
-          <p>{{ lines.linesText }}</p>
-          <h3><span class="font-weight-bold">翻译：{{ lines.transLangCn }}</span></h3>
-          <p>{{ lines.transText }}</p>
-        </div>
-        <div class="card-footer">
-          <p>上传时间: {{ lines.createTime }} - 上传者: {{ lines.uploaderName }}</p>
-        </div>
+  <div class="list-wrapper">
+    <ul>
+      {% for lines in linesList %}
+        <li class="card">
+          <div class="card-header">
+            <h3 class="card-title">
+              {{ loop.index }}. {{ lines.nameCn }} - {{ lines.originName }}
+            </h3>
+          </div>
+          <div class="card-body">
+            {% if lines.linesText %}
+              <section>
+                <p><span class="font-weight-bold">原剧：</span>{{ lines.linesText }}</p>
+              </section>
+            {% endif %}
+            {% if lines.transText %}
+              <section>
+                <p><span class="font-weight-bold">翻译：</span>{{ lines.transText }}</p>
+              </section>
+            {% endif %}
+          </div>
+          <div class="card-footer">
+            <p>上传时间: {{ lines.createTime }} - 上传者: {{ lines.uploaderName }}</p>
+          </div>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+  <nav aria-label="Page navigation example">
+    <ul class="pagination">
+      <li class="page-item {% if page === 1 %} disabled {% endif %}">
+        <a class="page-link"
+           href="/?formalId={{ formalId }}&areaId={{ areaId }}&helperId={{ helperId }}&page=1&pageSize={{ pageSize }}">首页</a>
       </li>
-    {% endfor %}
-  </ul>
-</div>
+      <li class="page-item {% if page === 1 %}disabled{% endif %}">
+        <a class="page-link"
+           href="/?formalId={{ formalId }}&areaId={{ areaId }}&helperId={{ helperId }}&page={{ page - 1 }}&pageSize={{ pageSize }}">上一页</a>
+      </li>
+      <li class="page-item {% if linesCount <= pageSize * page %} disabled {% endif %}">
+        <a class="page-link"
+           href="/?formalId={{ formalId }}&areaId={{ areaId }}&helperId={{ helperId }}&page={{ page + 1 }}&pageSize={{ pageSize }}">下一页</a>
+      </li>
+      <li class="page-item {% if page === lastPage %} disabled {% endif %}">
+        <a class="page-link"
+           href="/?formalId={{ formalId }}&areaId={{ areaId }}&helperId={{ helperId }}&page={{ lastPage }}&pageSize={{ pageSize }}">尾页</a>
+      </li>
+    </ul>
+  </nav>
 {% endblock %}

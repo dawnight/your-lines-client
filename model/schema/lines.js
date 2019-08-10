@@ -14,14 +14,14 @@ const ObjectId = Schema.Types.ObjectId;
 
 const LinesSchema = new Schema({
   _uploaderId: { type: ObjectId, ref: 'user', required: true },
-  originName: { type: String, required: true },
-  nameCn: { type: String, required: true },
+  originName: { type: String, required: false },
+  nameCn: { type: String, required: false },
   formalId: { type: String, required: true, enum: searchFormalIdList },
   areaId: { type: String, required: true, enum: searchAreaIdList },
-  linesLangId: { type: String, required: true, enum: searchLanguageIdList },
-  linesText: { type: String, required: true },
-  transLangId: { type: String, required: true, enum: searchLanguageIdList },
-  transText: { type: String, required: true },
+  linesLangId: { type: String, required: false, enum: searchLanguageIdList },
+  linesText: { type: String, required: false },
+  transLangId: { type: String, required: false, enum: searchLanguageIdList },
+  transText: { type: String, required: false },
   imageIdList: [{ type: String, default: '' }],
   ...COMMON_FIELDS
 });
