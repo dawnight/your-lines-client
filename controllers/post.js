@@ -7,7 +7,9 @@ import FilesModel from '../model/schema/files';
 import LinesModel from '../model/schema/lines';
 import { UPLOAD_AREA_MAP, UPLOAD_FORMAL_MAP, UPLOAD_LANGUAGE_MAP, PREFIX_URL } from '../config/constant';
 import { navMap, logoInfo } from './common';
-import uploadToQiniu from '../helpers/qiniu';
+import QiniuCloud from '../helpers/qiniu';
+import { CODE_OK, CODE_ERROR } from '../config/basic';
+import validator from 'validator';
 
 const uploadFormalMap = UPLOAD_FORMAL_MAP;
 const uploadAreaMap = UPLOAD_AREA_MAP;
@@ -92,7 +94,8 @@ export const postLines = (req, res, next) => {
       fs.renameSync(file.path, filePath);
 
       try {
-        body = await uploadToQiniu(fileName, filePath);
+        // body = await uploadToQiniu(fileName, filePath);
+        body = await QiniuCloud.uploadToQiniu(fileName, filePath);
       } catch (e) {
         // TODO 记录上传失败时错误，并把错误记录，作为信息记录发送给用户
         console.log(e);
@@ -104,6 +107,7 @@ export const postLines = (req, res, next) => {
             originPath: file.path,
             originName: file.name,
             originFiled: field,
+            inQiniu: true,
             size: file.size,
             type: 'image',
             fullType: file.type,
@@ -150,5 +154,80 @@ export const postLines = (req, res, next) => {
     });
   });
 
+};
+
+export const deleteBatchMap = async (req, res) => {
+
+  let fileList = await FilesModel.find({ inQiniu: true });
+
+  if (fileList.length === 0) {
+    return res.json({
+      status: CODE_ERROR,
+      msg: '没有数据'
+    });
+  }
+
+  let ids = [];
+
+  let keyList = [];
+
+  fileList.map(item => {
+
+    ids.push(item._id);
+
+    keyList.push(item.key);
+
+  });
+
+  await QiniuCloud.deleteBatchFile(keyList);
+
+  await FilesModel.updateMany({ _id: { $in: ids } }, { inQiniu: false });
+
+  return res.json({
+    status: CODE_OK,
+    msg: '批量删除成功'
+  });
+};
+
+export const deleteOne = async (req, res) => {
+
+  let id = req.body.id;
+
+  if (!validator.isMongoId(id)) {
+    return res.json({
+      status: CODE_ERROR,
+      msg: 'id 错误，不是标准的 Mongo ID'
+    });
+  }
+
+  try {
+    let file = await FilesModel.findOne({ _id: id });
+
+    if (file) {
+
+      await QiniuCloud.deleteOneFile(file.key);
+
+      await FilesModel.updateOne({ _id: id }, { inQiniu: false });
+
+      return res.json({
+        status: CODE_OK,
+        msg: '删除成功'
+      });
+    }
+
+    return res.json({
+      status: CODE_ERROR,
+      msg: '没有找到该文件'
+    });
+
+  } catch (err) {
+
+    console.log(err);
+
+    return res.json({
+      status: CODE_ERROR,
+      msg: '服务错误'
+    });
+  }
 };
 

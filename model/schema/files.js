@@ -7,6 +7,7 @@ const ObjectId = Schema.Types.ObjectId;
 
 const FilesSchema = new Schema({
   uploader: { type: ObjectId, ref: 'user', required: true },
+  inQiniu: { type: Boolean, default: false },
   originPath: { type: String, required: true },
   originName: { type: String, required: true },
   originFiled: { type: String, required: true },

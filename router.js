@@ -23,6 +23,8 @@ export default app => {
   app.get('/post', auth, wrap(Post.renderPost));
   // 这个参数校验，还有问题，目前是前端校验
   app.post('/post/lines', auth, Post.postLines);
+  app.post('/post/lines/deleteBatchMap', auth, Post.deleteBatchMap);
+  app.post('/post/lines/deleteOne', auth, Post.deleteOne);
 
   /*** TV PAGE ROUTER ***/
   app.get('/tv', wrap(TV.renderTv));
